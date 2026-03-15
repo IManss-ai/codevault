@@ -1,6 +1,16 @@
+# Environment secrets
 .env
-*.log
-node_modules/
+
+# OS files
 .DS_Store
 Thumbs.db
-vendor/
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs
+*.log
+error_log
