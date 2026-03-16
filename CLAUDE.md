@@ -84,13 +84,13 @@ A code snippet manager and knowledge base for developers. Users save, organize, 
 - [x] Dashboard (dashboard.php) — with pagination
 - [x] Snippet CRUD (new, edit, single view) — bug-fixed
 - [x] Explore page — with pagination
-- [ ] Public profiles
-- [ ] Settings page
+- [x] Public profiles — with pagination, fixed tag cap
+- [x] Settings page — profile, password, API key, export JSON; Settings link added to navbar
 - [x] REST API — ownership + UUID fixes applied
-- [ ] Embeddable widget
-- [x] Star system — UUID + AJAX base-url fix applied
-- [ ] GitHub Gist import
-- [ ] Export as JSON
+- [x] Embeddable widget — ?embed=1 on /snippet/{id}, standalone HTML with inline CSS, X-Frame-Options: ALLOWALL
+- [x] Star system — UUID + AJAX base-url fix applied; icon text update fixed
+- [x] GitHub Gist import — on /new page, client-side fetch from api.github.com, auto-fills form
+- [x] Export as JSON — /settings?export=json triggers download of all snippets
 
 ## Security & Bug Fixes Applied (2026-03-16)
 - **BUG 1 (CRITICAL):** Replaced `bin2hex(random_bytes(16))` with `gen_random_uuid()` via `RETURNING id` in all INSERT statements (auth, new-snippet, snippet fork/star, API create/star)

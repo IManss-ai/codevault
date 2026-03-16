@@ -40,15 +40,28 @@ $stmt = $pdo->prepare('
 $stmt->execute([':uid' => $profileUser['id']]);
 $totalStars = $stmt->fetch()['total'] ?? 0;
 
-// Fetch public snippets
+// Fetch public snippets with pagination
+$perPage     = 20;
+$currentPage = max(1, (int)($_GET['page'] ?? 1));
+$offset      = ($currentPage - 1) * $perPage;
+
+$countStmt = $pdo->prepare('SELECT COUNT(*) FROM snippets WHERE user_id = :uid AND is_public = true');
+$countStmt->execute([':uid' => $profileUser['id']]);
+$totalSnippets = (int)$countStmt->fetchColumn();
+$totalPages    = (int)ceil($totalSnippets / $perPage);
+
 $stmt = $pdo->prepare('
-    SELECT s.*, 
+    SELECT s.id, s.title, s.language, s.tags, s.view_count, s.created_at,
            (SELECT COUNT(*) FROM stars WHERE snippet_id = s.id) as star_count
     FROM snippets s
     WHERE s.user_id = :uid AND s.is_public = true
     ORDER BY s.created_at DESC
+    LIMIT :limit OFFSET :offset
 ');
-$stmt->execute([':uid' => $profileUser['id']]);
+$stmt->bindValue(':uid',    $profileUser['id']);
+$stmt->bindValue(':limit',  $perPage, PDO::PARAM_INT);
+$stmt->bindValue(':offset', $offset,  PDO::PARAM_INT);
+$stmt->execute();
 $snippets = $stmt->fetchAll();
 
 require BASE_PATH . '/includes/header.php';
@@ -96,7 +109,7 @@ require BASE_PATH . '/includes/header.php';
 
                     <?php if (!empty($snippet['tags'])): ?>
                         <div class="tags">
-                            <?php foreach (explode(',', $snippet['tags']) as $tag): ?>
+                            <?php foreach (array_slice(explode(',', $snippet['tags']), 0, 4) as $tag): ?>
                                 <span class="badge badge-tag"><?= sanitize(trim($tag)) ?></span>
                             <?php endforeach; ?>
                         </div>
@@ -110,6 +123,19 @@ require BASE_PATH . '/includes/header.php';
                 </div>
             <?php endforeach; ?>
         </div>
+        <?php if ($totalPages > 1): ?>
+            <div class="flex justify-center gap-sm mt-xl">
+                <?php if ($currentPage > 1): ?>
+                    <a href="?page=<?= $currentPage - 1 ?>" class="btn btn-secondary btn-sm">← Prev</a>
+                <?php endif; ?>
+                <span class="btn btn-ghost btn-sm" style="cursor:default;">
+                    Page <?= $currentPage ?> of <?= $totalPages ?>
+                </span>
+                <?php if ($currentPage < $totalPages): ?>
+                    <a href="?page=<?= $currentPage + 1 ?>" class="btn btn-secondary btn-sm">Next →</a>
+                <?php endif; ?>
+            </div>
+        <?php endif; ?>
     <?php else: ?>
         <div class="empty-state">
             <h3>No public snippets yet</h3>

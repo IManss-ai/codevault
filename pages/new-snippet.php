@@ -73,6 +73,20 @@ require BASE_PATH . '/includes/header.php';
         <h1>Create New Snippet</h1>
     </div>
 
+    <!-- GitHub Gist Import -->
+    <div class="card mb-xl" id="gist-import-card">
+        <h2 style="font-size: 1rem; margin-bottom: var(--space-md);">Import from GitHub Gist</h2>
+        <div class="flex gap-md" style="align-items: flex-end; flex-wrap: wrap;">
+            <div class="form-group" style="flex: 1; min-width: 260px; margin-bottom: 0;">
+                <label class="form-label" for="gist-url">Gist URL</label>
+                <input type="url" id="gist-url" class="form-input"
+                       placeholder="https://gist.github.com/user/abc123">
+            </div>
+            <button type="button" id="gist-import-btn" class="btn btn-secondary" style="margin-bottom: 1px;">Import</button>
+        </div>
+        <p id="gist-status" class="form-hint mt-sm" style="display:none;"></p>
+    </div>
+
     <?php if (!empty($errors)): ?>
         <div class="alert alert-error"><?= sanitize($errors[0]) ?></div>
     <?php endif; ?>
@@ -137,5 +151,89 @@ require BASE_PATH . '/includes/header.php';
         </div>
     </form>
 </div>
+
+<script>
+(function () {
+    // Map GitHub Gist language names to CodeVault supported language keys
+    var langMap = {
+        'JavaScript': 'javascript', 'TypeScript': 'typescript',
+        'Python': 'python', 'PHP': 'php', 'HTML': 'html', 'CSS': 'css',
+        'SQL': 'sql', 'Shell': 'bash', 'Bash': 'bash',
+        'Java': 'java', 'C': 'c', 'C++': 'cpp', 'C#': 'csharp',
+        'Ruby': 'ruby', 'Go': 'go', 'Rust': 'rust', 'Swift': 'swift',
+        'Kotlin': 'kotlin', 'R': 'r', 'Dart': 'dart',
+        'YAML': 'yaml', 'JSON': 'json', 'XML': 'xml',
+        'Markdown': 'markdown', 'Lua': 'lua', 'Perl': 'perl',
+    };
+
+    var btn    = document.getElementById('gist-import-btn');
+    var urlEl  = document.getElementById('gist-url');
+    var status = document.getElementById('gist-status');
+
+    function showStatus(msg, isError) {
+        status.textContent = msg;
+        status.style.display = 'block';
+        status.style.color = isError ? 'var(--danger)' : 'var(--success)';
+    }
+
+    btn.addEventListener('click', function () {
+        var raw = urlEl.value.trim();
+        if (!raw) { showStatus('Please enter a Gist URL.', true); return; }
+
+        // Extract Gist ID from URL: https://gist.github.com/user/GIST_ID
+        var match = raw.match(/gist\.github\.com\/[^\/]+\/([a-f0-9]+)/i);
+        if (!match) { showStatus('Invalid Gist URL. Expected: https://gist.github.com/user/id', true); return; }
+
+        var gistId = match[1];
+        btn.disabled = true;
+        btn.textContent = 'Importing…';
+        showStatus('Fetching Gist…', false);
+
+        fetch('https://api.github.com/gists/' + gistId, {
+            headers: { 'Accept': 'application/vnd.github.v3+json' }
+        })
+        .then(function (res) {
+            if (!res.ok) throw new Error('Gist not found or is private (HTTP ' + res.status + ').');
+            return res.json();
+        })
+        .then(function (data) {
+            var files = data.files;
+            var fileNames = Object.keys(files);
+            if (!fileNames.length) throw new Error('This Gist has no files.');
+
+            var file = files[fileNames[0]]; // use first file
+            var content = file.content || '';
+            var gistLang = file.language || '';
+            var mappedLang = langMap[gistLang] || 'javascript';
+
+            // Pre-fill form fields
+            document.getElementById('title').value       = file.filename || '';
+            document.getElementById('description').value = (data.description || '').trim();
+            document.getElementById('code-editor').value = content;
+
+            var langSelect = document.getElementById('language');
+            for (var i = 0; i < langSelect.options.length; i++) {
+                if (langSelect.options[i].value === mappedLang) {
+                    langSelect.selectedIndex = i;
+                    break;
+                }
+            }
+
+            // Trigger line/char counter update
+            document.getElementById('code-editor').dispatchEvent(new Event('input'));
+
+            showStatus('Imported "' + file.filename + '" successfully!', false);
+            document.getElementById('gist-import-card').scrollIntoView({ behavior: 'smooth' });
+        })
+        .catch(function (err) {
+            showStatus(err.message || 'Failed to fetch Gist.', true);
+        })
+        .finally(function () {
+            btn.disabled = false;
+            btn.textContent = 'Import';
+        });
+    });
+})();
+</script>
 
 <?php require BASE_PATH . '/includes/footer.php'; ?>

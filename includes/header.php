@@ -51,6 +51,7 @@ $pageTitle = isset($pageTitle) ? $pageTitle . ' — CodeVault' : 'CodeVault';
                 <li><a href="<?= BASE_URL ?>/dashboard">Dashboard</a></li>
                 <li><a href="<?= BASE_URL ?>/new" class="btn btn-primary btn-sm">+ New Snippet</a></li>
                 <li><a href="<?= BASE_URL ?>/u/<?= sanitize(currentUsername()) ?>"><?= sanitize(currentUsername()) ?></a></li>
+                <li><a href="<?= BASE_URL ?>/settings">Settings</a></li>
                 <li><a href="<?= BASE_URL ?>/logout">Logout</a></li>
             <?php else: ?>
                 <li><a href="<?= BASE_URL ?>/login">Log In</a></li>

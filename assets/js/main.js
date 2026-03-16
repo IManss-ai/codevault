@@ -126,6 +126,11 @@ document.addEventListener('click', function(e) {
     .then(function(data) {
         if (data.success) {
             starBtn.classList.toggle('starred', data.starred);
+            // Update the star icon character (first text node in the button)
+            const textNode = starBtn.firstChild;
+            if (textNode && textNode.nodeType === Node.TEXT_NODE) {
+                textNode.textContent = data.starred ? '★' : '☆';
+            }
             if (countEl) countEl.textContent = data.count;
         }
     })

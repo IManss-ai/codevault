@@ -52,6 +52,107 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && currentUserId() !== $snippet['user_i
     $stmt->execute([':id' => $snippetId]);
 }
 
+// ── Embed mode ────────────────────────────
+if (isset($_GET['embed']) && $_GET['embed'] === '1' && $snippet['is_public']) {
+    $prismLang = prismLanguage($snippet['language']);
+    header('X-Frame-Options: ALLOWALL');
+    ?><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><?= sanitize($snippet['title']) ?></title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0d1117;
+            color: #e6edf3;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        .embed-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.5rem 0.875rem;
+            background: #161b22;
+            border-bottom: 1px solid #30363d;
+            flex-shrink: 0;
+            gap: 0.5rem;
+        }
+        .embed-title {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #e6edf3;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .embed-meta {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex-shrink: 0;
+        }
+        .embed-badge {
+            font-size: 0.7rem;
+            font-weight: 500;
+            padding: 0.15rem 0.5rem;
+            border-radius: 9999px;
+            background: rgba(88,166,255,0.1);
+            color: #58a6ff;
+            border: 1px solid rgba(88,166,255,0.3);
+            white-space: nowrap;
+        }
+        .embed-link {
+            font-size: 0.7rem;
+            color: #58a6ff;
+            text-decoration: none;
+            white-space: nowrap;
+        }
+        .embed-link:hover { text-decoration: underline; }
+        .embed-code {
+            flex: 1;
+            overflow: auto;
+            padding: 0;
+        }
+        pre[class*="language-"] {
+            margin: 0;
+            border-radius: 0;
+            height: 100%;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.82rem;
+            line-height: 1.6;
+        }
+        code[class*="language-"] {
+            font-family: 'JetBrains Mono', monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="embed-header">
+        <span class="embed-title"><?= sanitize($snippet['title']) ?></span>
+        <div class="embed-meta">
+            <span class="embed-badge"><?= sanitize($snippet['language']) ?></span>
+            <a href="<?= BASE_URL ?>/snippet/<?= sanitize($snippetId) ?>" target="_blank" class="embed-link">View on CodeVault ↗</a>
+        </div>
+    </div>
+    <div class="embed-code">
+        <pre><code class="language-<?= sanitize($prismLang) ?>"><?= sanitize($snippet['code']) ?></code></pre>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+</body>
+</html>
+    <?php
+    exit;
+}
+
 // Get star count
 $stmt = $pdo->prepare('SELECT COUNT(*) as total FROM stars WHERE snippet_id = :id');
 $stmt->execute([':id' => $snippetId]);

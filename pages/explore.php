@@ -83,9 +83,10 @@ require BASE_PATH . '/includes/header.php';
 
         <?php if (!empty($availableLanguages)): ?>
             <div class="flex gap-sm items-center" style="flex-wrap: wrap;">
-                <a href="<?= BASE_URL ?>/explore" class="btn btn-sm <?= empty($languageFilter) ? 'btn-primary' : 'btn-secondary' ?>">All</a>
+                <a href="<?= BASE_URL ?>/explore<?= !empty($searchQuery) ? '?q=' . urlencode($searchQuery) : '' ?>"
+                   class="btn btn-sm <?= empty($languageFilter) ? 'btn-primary' : 'btn-secondary' ?>">All</a>
                 <?php foreach (array_slice($availableLanguages, 0, 8) as $lang): ?>
-                    <a href="<?= BASE_URL ?>/explore?lang=<?= urlencode($lang) ?>" 
+                    <a href="<?= BASE_URL ?>/explore?lang=<?= urlencode($lang) ?><?= !empty($searchQuery) ? '&q=' . urlencode($searchQuery) : '' ?>"
                        class="btn btn-sm <?= $languageFilter === $lang ? 'btn-primary' : 'btn-secondary' ?>">
                         <?= sanitize($lang) ?>
                     </a>

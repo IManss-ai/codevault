@@ -16,6 +16,31 @@ $stmt = $pdo->prepare('SELECT username, email, bio, website, api_key FROM users 
 $stmt->execute([':id' => $userId]);
 $user = $stmt->fetch();
 
+// Handle JSON export (GET with ?export=json)
+if (($_GET['export'] ?? '') === 'json') {
+    $stmt = $pdo->prepare('
+        SELECT id, title, description, code, language, tags, is_public,
+               view_count, forked_from, created_at, updated_at
+        FROM snippets
+        WHERE user_id = :uid
+        ORDER BY created_at DESC
+    ');
+    $stmt->execute([':uid' => $userId]);
+    $snippets = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    $export = [
+        'exported_at' => date('c'),
+        'username'    => $user['username'],
+        'snippets'    => $snippets,
+    ];
+
+    $filename = 'codevault-export-' . date('Y-m-d') . '.json';
+    header('Content-Type: application/json');
+    header('Content-Disposition: attachment; filename="' . $filename . '"');
+    echo json_encode($export, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+    exit;
+}
+
 // Handle form submissions
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $action = $_POST['action'] ?? '';
@@ -158,6 +183,15 @@ require BASE_PATH . '/includes/header.php';
                 <?= !empty($user['api_key']) ? 'Regenerate API Key' : 'Generate API Key' ?>
             </button>
         </form>
+    </div>
+
+    <!-- Export Section -->
+    <div class="card mb-xl">
+        <h2 style="font-size: 1.15rem; margin-bottom: var(--space-sm);">Export Your Vault</h2>
+        <p class="text-secondary mb-lg" style="font-size: 0.9rem;">
+            Download all your snippets as a JSON file. Includes titles, descriptions, code, tags, and metadata.
+        </p>
+        <a href="<?= BASE_URL ?>/settings?export=json" class="btn btn-secondary">Download JSON</a>
     </div>
 
     <!-- Change Password Section -->
