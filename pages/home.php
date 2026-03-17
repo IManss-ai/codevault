@@ -56,7 +56,7 @@ require BASE_PATH . '/includes/header.php';
 
         <!-- Stats strip -->
         <?php if ($totalSnippets > 0 || $totalUsers > 0): ?>
-        <div style="display: flex; justify-content: center; gap: 48px; margin-top: 2rem; margin-bottom: 64px; flex-wrap: wrap;">
+        <div style="display: flex; justify-content: center; gap: 48px; margin-top: 2rem; margin-bottom: 0; flex-wrap: wrap;">
             <div style="text-align: center;">
                 <div style="font-size: 1.5rem; font-weight: 700; color: #e2e4ea; letter-spacing: -0.02em; font-variant-numeric: tabular-nums;">
                     <?= number_format($totalSnippets) ?>
@@ -79,7 +79,7 @@ require BASE_PATH . '/includes/header.php';
 </section>
 
 <!-- Features Section -->
-<section class="container" style="padding-bottom: var(--space-2xl);">
+<section class="container">
     <div class="features">
         <div class="feature-card">
             <div class="feature-icon-wrap">
@@ -139,44 +139,30 @@ require BASE_PATH . '/includes/header.php';
 <!-- Recently Shared -->
 <?php if (!empty($recentSnippets)): ?>
 <section class="container" style="padding-bottom: var(--space-3xl);">
-    <div class="section-header">
-        <div>
-            <p class="section-label">Community</p>
-            <h2>Recently shared</h2>
-        </div>
+    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;">
+        <span class="section-label">Recently Shared</span>
         <a href="<?= BASE_URL ?>/explore" class="btn btn-secondary btn-sm">View all</a>
     </div>
 
-    <div class="snippet-grid">
+    <div class="home-recent-grid">
         <?php foreach ($recentSnippets as $snippet): ?>
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title">
-                        <a href="<?= BASE_URL ?>/snippet/<?= sanitize($snippet['id']) ?>">
-                            <?= sanitize($snippet['title']) ?>
-                        </a>
-                    </h3>
-                    <span class="badge badge-language"><?= sanitize($snippet['language']) ?></span>
+            <div class="home-snippet-card">
+                <div class="home-snippet-card-header">
+                    <a href="<?= BASE_URL ?>/snippet/<?= sanitize($snippet['id']) ?>" class="home-snippet-title">
+                        <?= sanitize($snippet['title']) ?>
+                    </a>
+                    <span class="home-snippet-star">★ <?= (int)$snippet['star_count'] ?></span>
                 </div>
 
                 <?php if (!empty($snippet['code'])): ?>
-                    <div class="snippet-preview"><?= sanitize(truncate($snippet['code'], 100)) ?></div>
+                    <div class="home-snippet-preview"><?= sanitize(truncate($snippet['code'], 120)) ?></div>
                 <?php endif; ?>
 
-                <?php if (!empty($snippet['tags'])): ?>
-                    <div class="tags mt-sm">
-                        <?php foreach (array_slice(explode(',', $snippet['tags']), 0, 3) as $tag): ?>
-                            <span class="badge badge-tag"><?= sanitize(trim($tag)) ?></span>
-                        <?php endforeach; ?>
-                    </div>
-                <?php endif; ?>
-
-                <div class="card-meta">
-                    <a href="<?= BASE_URL ?>/u/<?= sanitize($snippet['username']) ?>">
+                <div class="home-snippet-footer">
+                    <span class="badge badge-language"><?= sanitize($snippet['language']) ?></span>
+                    <a href="<?= BASE_URL ?>/u/<?= sanitize($snippet['username']) ?>" class="home-snippet-author">
                         <?= sanitize($snippet['username']) ?>
                     </a>
-                    <span>★ <?= (int)$snippet['star_count'] ?></span>
-                    <span><?= timeAgo($snippet['created_at']) ?></span>
                 </div>
             </div>
         <?php endforeach; ?>

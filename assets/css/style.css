@@ -541,7 +541,7 @@ main {
 .btn-secondary {
     background: transparent;
     color: var(--btn-secondary-text);
-    border-color: var(--border);
+    border-color: #2a3045;
 }
 .btn-secondary:hover {
     background: var(--bg-tertiary);
@@ -579,8 +579,9 @@ main {
     font-size: 0.75rem;
 }
 .btn-lg {
-    padding: 10px 24px;
+    padding: 11px 28px;
     font-size: 0.875rem;
+    font-weight: 600;
     border-radius: 8px;
 }
 .btn-block {
@@ -720,6 +721,76 @@ main {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
     gap: var(--space-md);
+}
+
+/* Home page — recently shared 3-col grid */
+.home-recent-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-md);
+}
+.home-snippet-card {
+    background: rgba(17,20,32,0.7);
+    border: 1px solid #1e2330;
+    border-radius: var(--radius-lg);
+    padding: 1rem 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+    transition: border-color var(--transition);
+}
+.home-snippet-card:hover {
+    border-color: #2a3045;
+}
+.home-snippet-card-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--space-sm);
+}
+.home-snippet-title {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #e2e4ea;
+    text-decoration: none;
+    line-height: 1.4;
+}
+.home-snippet-title:hover {
+    color: var(--link-hover);
+    text-decoration: none;
+}
+.home-snippet-star {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    flex-shrink: 0;
+}
+.home-snippet-preview {
+    background: #0b0d14;
+    border: 1px solid #1a1d2a;
+    border-radius: 6px;
+    padding: 8px 10px;
+    font-family: var(--font-code);
+    font-size: 0.72rem;
+    color: #4a4f63;
+    max-height: 52px;
+    overflow: hidden;
+    line-height: 1.55;
+    white-space: pre;
+}
+.home-snippet-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: auto;
+}
+.home-snippet-author {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    text-decoration: none;
+}
+.home-snippet-author:hover {
+    color: var(--text-secondary);
+    text-decoration: none;
 }
 
 /* ── Badges ────────────────────────────── */
@@ -985,20 +1056,21 @@ main {
 /* ── Landing / Hero ─────────────────────── */
 .hero {
     text-align: center;
-    padding: 100px 0 60px;
+    padding: 100px 0 48px;
 }
 .hero h1 {
     font-size: clamp(2.2rem, 5vw, 3rem);
-    font-weight: 600;
-    letter-spacing: -1px;
+    font-style: normal;
+    font-weight: 700;
+    letter-spacing: -1.5px;
     line-height: 1.15;
     margin-bottom: var(--space-md);
     color: #e2e4ea;
 }
 .hero p {
-    font-size: 1rem;
-    color: #6b7080;
-    max-width: 480px;
+    font-size: 15px;
+    color: #8b8fa3;
+    max-width: 500px;
     margin: 0 auto var(--space-xl);
     line-height: 1.7;
 }
@@ -1057,11 +1129,11 @@ main {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: var(--space-md);
-    padding: var(--space-2xl) 0;
+    padding: 0 0 var(--space-2xl);
 }
 .feature-card {
     padding: 24px;
-    background: rgba(17,20,32,0.6);
+    background: rgba(17,20,32,0.7);
     backdrop-filter: blur(8px);
     border: 1px solid #1e2330;
     border-radius: 10px;
@@ -1070,14 +1142,17 @@ main {
 .feature-card:hover {
     border-color: #2a3045;
 }
+.feature-icon-wrap svg {
+    color: #6b7080;
+}
 .feature-icon {
     width: 36px;
     height: 36px;
-    color: var(--text-secondary);
+    color: #6b7080;
     margin-bottom: var(--space-md);
 }
 .feature-card h3 {
-    font-size: 14px;
+    font-size: 15px;
     font-weight: 600;
     margin-top: 14px;
     margin-bottom: var(--space-sm);
@@ -1091,12 +1166,12 @@ main {
 
 /* CTA section */
 .cta-section {
-    border-top: 1px solid var(--border);
-    padding: 60px 0;
+    border-top: 1px solid #1a1d2a;
+    padding: 64px 0;
     text-align: center;
 }
 .cta-section h2 {
-    font-size: 1.3rem;
+    font-size: 1.4rem;
     font-weight: 600;
     margin-bottom: var(--space-md);
     letter-spacing: -0.02em;
@@ -1328,6 +1403,7 @@ main {
     .site-footer { flex-direction: column; text-align: center; padding: 20px; }
     .snippet-preview { overflow-x: auto; -webkit-overflow-scrolling: touch; }
     .features { grid-template-columns: repeat(2, 1fr); }
+    .home-recent-grid { grid-template-columns: repeat(2, 1fr); }
 }
 
 @media (max-width: 480px) {
@@ -1342,6 +1418,7 @@ main {
     .features {
         grid-template-columns: 1fr;
     }
+    .home-recent-grid { grid-template-columns: 1fr; }
 }
 
 /* ── 3D Wave Background ─────────────────────────────────── */
