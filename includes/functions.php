@@ -219,6 +219,6 @@ function getSupportedLanguages(): array
  */
 function truncate(string $text, int $length = 100): string
 {
-    if (mb_strlen($text) <= $length) return $text;
-    return mb_substr($text, 0, $length) . '...';
+    if (strlen($text) <= $length) return $text;
+    return substr($text, 0, $length) . '...';
 }
