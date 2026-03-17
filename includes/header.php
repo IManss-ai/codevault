@@ -2,6 +2,11 @@
 // $pageTitle should be set by the page before including header.php
 $pageTitle = isset($pageTitle) ? $pageTitle . ' — CodeVault' : 'CodeVault';
 $_isLoggedIn = isLoggedIn();
+
+// Sidebar only appears on app pages, never on home / login / register —
+// even when the user is logged in.
+$_appPages   = ['dashboard', 'new', 'edit', 'snippet', 'explore', 'settings', 'docs', 'u'];
+$showSidebar = $_isLoggedIn && in_array($page ?? '', $_appPages);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -31,7 +36,7 @@ $_isLoggedIn = isLoggedIn();
 <!-- ── Navbar ──────────────────────────────────────────────── -->
 <nav class="navbar">
 
-    <?php if ($_isLoggedIn): ?>
+    <?php if ($showSidebar): ?>
     <button class="navbar-hamburger" id="sidebar-toggle" aria-label="Toggle sidebar">
         <div class="navbar-hamburger-lines">
             <span></span><span></span><span></span>
@@ -102,7 +107,7 @@ $_flashError   = getFlash('flash_error');
 $_flashSuccess = getFlash('flash_success');
 ?>
 
-<?php if ($_isLoggedIn): ?>
+<?php if ($showSidebar): ?>
 <!-- ── App layout: sidebar + main ──────────────────────────── -->
 <div class="app-layout">
     <?php require BASE_PATH . '/includes/sidebar.php'; ?>

@@ -1,6 +1,10 @@
-<?php $_footerIsLoggedIn = isLoggedIn(); ?>
+<?php
+// Must match header.php's $showSidebar logic exactly.
+$_appPages       = ['dashboard', 'new', 'edit', 'snippet', 'explore', 'settings', 'docs', 'u'];
+$_footerSidebar  = isLoggedIn() && in_array($page ?? '', $_appPages);
+?>
 
-<?php if ($_footerIsLoggedIn): ?>
+<?php if ($_footerSidebar): ?>
     </div><!-- /.app-main -->
 </div><!-- /.app-layout -->
 
