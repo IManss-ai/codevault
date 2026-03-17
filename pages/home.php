@@ -28,7 +28,6 @@ $recentSnippets = $stmt->fetchAll();
 require BASE_PATH . '/includes/header.php';
 ?>
 
-<div id="wave-container"></div>
 <div class="landing-content">
 
 <!-- Hero Section -->

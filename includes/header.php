@@ -33,6 +33,10 @@ $showSidebar = $_isLoggedIn && in_array($page ?? '', $_appPages);
 </head>
 <body>
 
+<?php if (($page ?? '') === ''): ?>
+<div id="wave-container"></div>
+<?php endif; ?>
+
 <!-- ── Navbar ──────────────────────────────────────────────── -->
 <nav class="navbar">
 
