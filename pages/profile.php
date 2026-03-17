@@ -79,7 +79,7 @@ require BASE_PATH . '/includes/header.php';
             <span><?= (int)$publicCount ?> snippets</span>
             <span>★ <?= (int)$totalStars ?></span>
             <span>Joined <?= timeAgo($profileUser['created_at']) ?></span>
-            <?php if (!empty($profileUser['website'])): ?>
+            <?php if (!empty($profileUser['website']) && preg_match('/^https?:\/\//i', $profileUser['website'])): ?>
                 <a href="<?= sanitize($profileUser['website']) ?>" target="_blank" rel="noopener"
                    style="color: var(--text-muted);">
                     <?= sanitize(parse_url($profileUser['website'], PHP_URL_HOST) ?: $profileUser['website']) ?>

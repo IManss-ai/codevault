@@ -44,8 +44,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             case 'update_profile':
                 $bio     = trim($_POST['bio'] ?? '');
                 $website = trim($_POST['website'] ?? '');
-                if (!empty($website) && !filter_var($website, FILTER_VALIDATE_URL)) {
-                    $errors[] = 'Please enter a valid URL for your website.';
+                if (!empty($website) && (!filter_var($website, FILTER_VALIDATE_URL) || !preg_match('/^https?:\/\//i', $website))) {
+                    $errors[] = 'Please enter a valid URL starting with http:// or https://.';
                     break;
                 }
                 $pdo->prepare('UPDATE users SET bio = :bio, website = :website WHERE id = :id')

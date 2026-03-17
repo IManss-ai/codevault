@@ -323,7 +323,7 @@ h1, h2, h3, h4 {
     position: fixed;
     inset: 0;
     background: rgba(0,0,0,0.6);
-    z-index: 99;
+    z-index: 98;
     backdrop-filter: blur(2px);
 }
 .sidebar-overlay.active {
@@ -1380,30 +1380,38 @@ main {
 
 @media (max-width: 768px) {
     .navbar-hamburger { display: flex; }
-    .navbar-search { display: none; }
 
-    /* Sidebar slides in from left */
+    /* Show search as icon-only on mobile */
+    .navbar-search { width: auto; min-width: 0; padding: 0.3rem 0.5rem; }
+    .navbar-search-text,
+    .navbar-search-kbd { display: none; }
+
+    /* Sidebar slides in from left via transform */
     .app-sidebar {
         position: fixed;
+        left: 0;
         top: var(--navbar-h);
-        left: -220px;
+        bottom: 0;
         height: calc(100vh - var(--navbar-h));
-        z-index: 100;
-        transition: left 200ms ease;
+        transform: translateX(-100%);
+        transition: transform 200ms ease;
+        z-index: 99;
         width: 200px;
     }
     .app-sidebar.open {
-        left: 0;
+        transform: translateX(0);
     }
 
     .app-main { padding: 16px; }
     .snippet-grid { grid-template-columns: 1fr; }
-    .stats-bar { flex-direction: column; }
+    .stats-bar { flex-wrap: wrap; }
+    .stat-item { min-width: 100%; }
     .hero h1 { font-size: 1.9rem; }
     .auth-card { padding: var(--space-lg); }
     .page-header { flex-direction: column; align-items: flex-start; }
     .site-footer { flex-direction: column; text-align: center; padding: 20px; }
     .snippet-preview { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .code-block { overflow-x: auto; }
     .features { grid-template-columns: repeat(2, 1fr); }
     .home-recent-grid { grid-template-columns: repeat(2, 1fr); }
 }
