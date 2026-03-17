@@ -31,14 +31,15 @@ require BASE_PATH . '/includes/header.php';
 <div class="landing-content">
 
 <!-- Hero Section -->
-<section class="hero">
-    <div class="container" style="max-width: 640px;">
+<section class="hero" style="position: relative;">
+    <div class="hero-glow"></div>
+    <div class="container" style="max-width: 640px; position: relative;">
 
         <!-- Pill badge -->
         <span class="hero-pill">Open source &middot; Self-hostable &middot; Free</span>
 
-        <h1 style="font-weight: 600; letter-spacing: -0.8px;">Your personal<br>code library</h1>
-        <p style="color: #4a4f63; font-size: 1rem; max-width: 460px; margin: 0 auto var(--space-xl);">
+        <h1>Your personal<br>code library</h1>
+        <p>
             Save snippets you'll actually find again. Search by language, tag, or title.
             Share what's useful, keep the rest private.
         </p>
@@ -55,22 +56,22 @@ require BASE_PATH . '/includes/header.php';
 
         <!-- Stats strip -->
         <?php if ($totalSnippets > 0 || $totalUsers > 0): ?>
-        <div style="display: flex; justify-content: center; gap: 2.5rem; margin-top: 2rem; flex-wrap: wrap;">
+        <div style="display: flex; justify-content: center; gap: 48px; margin-top: 2rem; margin-bottom: 64px; flex-wrap: wrap;">
             <div style="text-align: center;">
-                <div style="font-size: 1.25rem; font-weight: 700; color: var(--text-primary); letter-spacing: -0.02em;">
+                <div style="font-size: 1.5rem; font-weight: 700; color: #e2e4ea; letter-spacing: -0.02em; font-variant-numeric: tabular-nums;">
                     <?= number_format($totalSnippets) ?>
                 </div>
-                <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 2px;">public snippets</div>
+                <div style="font-size: 11px; color: #3a3f52; margin-top: 3px; text-transform: uppercase; letter-spacing: 0.5px;">public snippets</div>
             </div>
             <div style="text-align: center;">
-                <div style="font-size: 1.25rem; font-weight: 700; color: var(--text-primary); letter-spacing: -0.02em;">
+                <div style="font-size: 1.5rem; font-weight: 700; color: #e2e4ea; letter-spacing: -0.02em; font-variant-numeric: tabular-nums;">
                     <?= number_format($totalUsers) ?>
                 </div>
-                <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 2px;">developers</div>
+                <div style="font-size: 11px; color: #3a3f52; margin-top: 3px; text-transform: uppercase; letter-spacing: 0.5px;">developers</div>
             </div>
             <div style="text-align: center;">
-                <div style="font-size: 1.25rem; font-weight: 700; color: var(--text-primary); letter-spacing: -0.02em;">25+</div>
-                <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 2px;">languages</div>
+                <div style="font-size: 1.5rem; font-weight: 700; color: #e2e4ea; letter-spacing: -0.02em; font-variant-numeric: tabular-nums;">25+</div>
+                <div style="font-size: 11px; color: #3a3f52; margin-top: 3px; text-transform: uppercase; letter-spacing: 0.5px;">languages</div>
             </div>
         </div>
         <?php endif; ?>
@@ -188,7 +189,7 @@ require BASE_PATH . '/includes/header.php';
     <div class="container" style="max-width: 480px;">
         <h2>Ready to build your code library?</h2>
         <p>Stop losing snippets in Slack threads and browser bookmarks.</p>
-        <a href="<?= BASE_URL ?>/register" class="btn btn-primary btn-lg">Get started free</a>
+        <a href="<?= BASE_URL ?>/register" class="btn btn-primary btn-lg">Get started — it's free</a>
     </div>
 </section>
 <?php endif; ?>
