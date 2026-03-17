@@ -146,7 +146,7 @@ require BASE_PATH . '/includes/header.php';
 
     <div class="home-recent-grid">
         <?php foreach ($recentSnippets as $snippet): ?>
-            <div class="home-snippet-card">
+            <div class="home-snippet-card card snippet-card" data-language="<?= sanitize($snippet['language']) ?>">
                 <div class="home-snippet-card-header">
                     <a href="<?= BASE_URL ?>/snippet/<?= sanitize($snippet['id']) ?>" class="home-snippet-title">
                         <?= sanitize($snippet['title']) ?>
