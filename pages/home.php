@@ -38,7 +38,7 @@ require BASE_PATH . '/includes/header.php';
         <!-- Pill badge -->
         <span class="hero-pill">Open source &middot; Self-hostable &middot; Free</span>
 
-        <h1>Your personal<br>code library</h1>
+        <h1 style="font-style: normal;">Your personal<br>code library</h1>
         <p>
             Save snippets you'll actually find again. Search by language, tag, or title.
             Share what's useful, keep the rest private.

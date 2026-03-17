@@ -738,6 +738,8 @@ main {
     flex-direction: column;
     gap: var(--space-sm);
     transition: border-color var(--transition);
+    min-width: 0;
+    overflow: hidden;
 }
 .home-snippet-card:hover {
     border-color: #2a3045;
@@ -773,8 +775,8 @@ main {
     font-size: 0.72rem;
     color: #4a4f63;
     max-height: 52px;
+    max-width: 100%;
     overflow: hidden;
-    max-height: 52px;
     white-space: pre;
     text-overflow: ellipsis;
     line-height: 1.55;
@@ -1060,7 +1062,8 @@ main {
     text-align: center;
     padding: 100px 0 48px;
 }
-.hero h1 {
+.hero h1,
+.hero h1 * {
     font-size: clamp(2.2rem, 5vw, 3rem);
     font-style: normal !important;
     font-weight: 700;
