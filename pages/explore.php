@@ -88,32 +88,26 @@ require BASE_PATH . '/includes/header.php';
     <!-- 2-column grid -->
     <div class="snippet-grid" style="grid-template-columns: repeat(2, 1fr); gap: 12px;">
         <?php foreach ($snippets as $snippet): ?>
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title">
+            <div class="card" style="display:flex; flex-direction:column; gap:0.5rem;">
+                <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:0.5rem;">
+                    <h3 class="card-title" style="min-width:0;">
                         <a href="<?= BASE_URL ?>/snippet/<?= sanitize($snippet['id']) ?>">
                             <?= sanitize($snippet['title']) ?>
                         </a>
                     </h3>
-                    <span class="badge badge-language"><?= sanitize($snippet['language']) ?></span>
+                    <span style="font-size:0.73rem; color:var(--text-hint); flex-shrink:0;">★ <?= (int)$snippet['star_count'] ?></span>
                 </div>
 
                 <?php if (!empty($snippet['code'])): ?>
                     <div class="snippet-preview"><?= sanitize(truncate($snippet['code'], 100)) ?></div>
                 <?php endif; ?>
 
-                <?php if (!empty($snippet['tags'])): ?>
-                    <div class="tags mt-sm">
-                        <?php foreach (array_slice(explode(',', $snippet['tags']), 0, 3) as $tag): ?>
-                            <span class="badge badge-tag"><?= sanitize(trim($tag)) ?></span>
-                        <?php endforeach; ?>
-                    </div>
-                <?php endif; ?>
-
-                <div class="card-meta">
-                    <a href="<?= BASE_URL ?>/u/<?= sanitize($snippet['username']) ?>"><?= sanitize($snippet['username']) ?></a>
-                    <span>★ <?= (int)$snippet['star_count'] ?></span>
-                    <span><?= timeAgo($snippet['created_at']) ?></span>
+                <div style="display:flex; align-items:center; justify-content:space-between; margin-top:auto; padding-top:0.25rem;">
+                    <span class="badge badge-language"><?= sanitize($snippet['language']) ?></span>
+                    <a href="<?= BASE_URL ?>/u/<?= sanitize($snippet['username']) ?>"
+                       style="font-size:0.73rem; color:var(--text-muted); text-decoration:none;">
+                        <?= sanitize($snippet['username']) ?>
+                    </a>
                 </div>
             </div>
         <?php endforeach; ?>

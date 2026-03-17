@@ -62,7 +62,7 @@ $languages = getSupportedLanguages();
 require BASE_PATH . '/includes/header.php';
 ?>
 
-<div style="max-width: 560px;">
+<div style="max-width: 640px;">
 
     <div class="page-header">
         <h1>New snippet</h1>

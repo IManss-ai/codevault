@@ -157,7 +157,7 @@ $prismLang = prismLanguage($snippet['language']);
 require BASE_PATH . '/includes/header.php';
 ?>
 
-<div style="max-width: 860px;">
+<div style="max-width: 720px;">
 
     <!-- Title + actions row -->
     <div class="page-header">

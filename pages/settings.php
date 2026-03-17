@@ -99,7 +99,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 require BASE_PATH . '/includes/header.php';
 ?>
 
-<div style="max-width: 600px;">
+<div style="max-width: 640px;">
 
     <div class="page-header">
         <h1>Settings</h1>
@@ -110,7 +110,7 @@ require BASE_PATH . '/includes/header.php';
     <?php endif; ?>
 
     <!-- Profile -->
-    <div class="card mb-xl">
+    <div class="card" style="padding: 24px; margin-bottom: 16px;">
         <h2 style="font-size: 1rem; font-weight: 600; color: var(--text-secondary); margin-bottom: var(--space-lg);">Profile</h2>
         <form method="POST">
             <input type="hidden" name="csrf_token" value="<?= generateCSRF() ?>">
@@ -145,7 +145,7 @@ require BASE_PATH . '/includes/header.php';
     </div>
 
     <!-- API Key -->
-    <div class="card mb-xl">
+    <div class="card" style="padding: 24px; margin-bottom: 16px;">
         <h2 style="font-size: 1rem; font-weight: 600; color: var(--text-secondary); margin-bottom: var(--space-lg);">API Key</h2>
 
         <?php if ($newApiKey): ?>
@@ -174,7 +174,7 @@ require BASE_PATH . '/includes/header.php';
     </div>
 
     <!-- Export -->
-    <div class="card mb-xl">
+    <div class="card" style="padding: 24px; margin-bottom: 16px;">
         <h2 style="font-size: 1rem; font-weight: 600; color: var(--text-secondary); margin-bottom: var(--space-sm);">Export Your Vault</h2>
         <p style="font-size: 0.875rem; color: var(--text-muted); margin-bottom: var(--space-lg);">
             Download all your snippets as a JSON file including titles, descriptions, code, tags, and metadata.
@@ -183,7 +183,7 @@ require BASE_PATH . '/includes/header.php';
     </div>
 
     <!-- Change Password -->
-    <div class="card mb-xl">
+    <div class="card" style="padding: 24px; margin-bottom: 16px;">
         <h2 style="font-size: 1rem; font-weight: 600; color: var(--text-secondary); margin-bottom: var(--space-lg);">Change Password</h2>
         <form method="POST">
             <input type="hidden" name="csrf_token" value="<?= generateCSRF() ?>">

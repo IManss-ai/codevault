@@ -101,7 +101,7 @@ require BASE_PATH . '/includes/header.php';
     </div>
 
     <!-- Snippet List (vertical) -->
-    <div style="display: flex; flex-direction: column; gap: 0.625rem;">
+    <div style="display: flex; flex-direction: column; gap: 8px;">
         <?php foreach ($snippets as $snippet): ?>
             <div class="card snippet-card"
                  data-title="<?= sanitize($snippet['title']) ?>"
@@ -143,7 +143,7 @@ require BASE_PATH . '/includes/header.php';
                 </div>
 
                 <?php if (!empty($snippet['code'])): ?>
-                    <div class="snippet-preview" style="max-height: 26px; margin-top: 0.5rem;">
+                    <div class="snippet-preview" style="max-height: 32px; margin-top: 0.5rem;">
                         <?= sanitize(truncate($snippet['code'], 120)) ?>
                     </div>
                 <?php endif; ?>

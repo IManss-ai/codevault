@@ -332,8 +332,8 @@ h1, h2, h3, h4 {
 
 /* Page fade-in */
 @keyframes fadeIn {
-    from { opacity: 0; }
-    to   { opacity: 1; }
+    from { opacity: 0; transform: translateY(-8px); }
+    to   { opacity: 1; transform: translateY(0); }
 }
 .app-main {
     flex: 1;
@@ -605,7 +605,7 @@ main {
 .form-textarea,
 .form-select {
     width: 100%;
-    padding: 0.55rem 0.8rem;
+    padding: 10px 14px;
     font-family: var(--font-ui);
     font-size: 0.875rem;
     color: var(--text-primary);
@@ -869,6 +869,7 @@ main {
 }
 .copy-btn:hover {
     color: var(--text-secondary);
+    background: #1e2330;
     border-color: var(--border-hover);
 }
 .copy-btn.copied {
@@ -911,33 +912,33 @@ main {
 /* ── Stats Bar ─────────────────────────── */
 .stats-bar {
     display: flex;
-    gap: var(--space-md);
+    gap: 8px;
     flex-wrap: wrap;
-    margin-bottom: var(--space-xl);
+    margin-bottom: var(--space-lg);
 }
 .stat-item {
     background: var(--bg-secondary);
     border: 1px solid var(--border);
     border-radius: var(--radius-lg);
-    padding: var(--space-md) var(--space-lg);
+    padding: 0.625rem 0.875rem;
     flex: 1;
-    min-width: 130px;
+    min-width: 120px;
     transition: border-color var(--transition);
 }
 .stat-item:hover {
     border-color: var(--border-hover);
 }
 .stat-value {
-    font-size: 1.5rem;
+    font-size: 1.35rem;
     font-weight: 700;
     color: var(--text-primary);
     letter-spacing: -0.02em;
     font-variant-numeric: tabular-nums;
 }
 .stat-label {
-    font-size: 0.75rem;
+    font-size: 0.72rem;
     color: var(--text-muted);
-    margin-top: var(--space-xs);
+    margin-top: 2px;
 }
 
 /* ── Search Bar ────────────────────────── */
@@ -999,17 +1000,13 @@ main {
 }
 
 /* ── Alerts ─────────────────────────────── */
-@keyframes slideDown {
-    from { opacity: 0; transform: translateY(-10px); }
-    to   { opacity: 1; transform: translateY(0); }
-}
 .alert {
     padding: 0.75rem var(--space-md);
     border-radius: var(--radius-md);
     font-size: 0.84rem;
     margin-bottom: var(--space-lg);
     border: 1px solid;
-    animation: slideDown 200ms ease;
+    animation: fadeIn 200ms ease;
 }
 .alert-error {
     background: var(--danger-bg);
@@ -1032,11 +1029,11 @@ main {
 }
 .auth-card {
     width: 100%;
-    max-width: 400px;
-    background: var(--bg-secondary);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-lg);
-    padding: var(--space-2xl);
+    max-width: 380px;
+    background: #111420;
+    border: 1px solid #1e2330;
+    border-radius: 8px;
+    padding: 32px;
 }
 .auth-card h1 {
     font-size: 1.3rem;
@@ -1221,10 +1218,10 @@ main {
     gap: var(--space-md);
 }
 .page-header h1 {
-    font-size: 1.25rem;
-    font-weight: 700;
+    font-size: 17px;
+    font-weight: 600;
     color: var(--text-primary);
-    letter-spacing: -0.01em;
+    letter-spacing: -0.3px;
 }
 
 /* ── Footer ─────────────────────────────── */
