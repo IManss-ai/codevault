@@ -143,8 +143,8 @@ require BASE_PATH . '/includes/header.php';
                 </div>
 
                 <?php if (!empty($snippet['code'])): ?>
-                    <div class="snippet-preview" style="max-height: 32px; margin-top: 0.5rem;">
-                        <?= sanitize(truncate($snippet['code'], 120)) ?>
+                    <div class="snippet-preview">
+                        <?= sanitize(truncate(trim($snippet['code']), 120)) ?>
                     </div>
                 <?php endif; ?>
 

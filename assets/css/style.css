@@ -780,6 +780,7 @@ main {
     white-space: pre;
     text-overflow: ellipsis;
     line-height: 1.55;
+    text-align: left;
 }
 .home-snippet-footer {
     display: flex;
@@ -819,6 +820,11 @@ main {
 .badge-public {
     background: rgba(52, 211, 153, 0.1);
     color: #34d399;
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    border: none;
+    font-weight: 500;
 }
 .badge-private {
     background: var(--bg-tertiary);
@@ -1270,12 +1276,14 @@ main {
     font-family: var(--font-code);
     font-size: 0.76rem;
     color: #6b7080;
+    text-align: left;
     max-height: 3.5rem; /* ~3 lines at 0.76rem font-size */
     overflow: hidden;
     margin-top: var(--space-sm);
     line-height: 1.55;
     white-space: pre;
     text-overflow: ellipsis;
+    text-align: left;
 }
 
 /* ── Tags Row ───────────────────────────── */
