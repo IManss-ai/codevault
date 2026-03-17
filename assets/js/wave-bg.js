@@ -3,10 +3,10 @@
     if (!container) return;
 
     var scene    = new THREE.Scene();
-    scene.fog    = new THREE.FogExp2(0x0b0d14, 0.0004);
+    scene.fog    = new THREE.FogExp2(0x0b0d14, 0.00025);
 
     var camera   = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 10000);
-    camera.position.set(0, 500, 1500);
+    camera.position.set(0, 400, 1300);
     camera.lookAt(0, 0, 0);
 
     var renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
@@ -34,10 +34,10 @@
     geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
 
     var material = new THREE.PointsMaterial({
-        size:            3,
-        opacity:         0.25,
+        size:            4.5,
+        opacity:         0.45,
         transparent:     true,
-        color:           new THREE.Color('rgb(80,85,110)'),
+        color:           new THREE.Color('rgb(120,125,160)'),
         sizeAttenuation: true,
     });
 
@@ -54,8 +54,8 @@
         for (var row = 0; row < ROWS; row++) {
             for (var col = 0; col < COLS; col++) {
                 pos.array[idx * 3 + 1] =
-                    Math.sin((col + count) * 0.3) * 30 +
-                    Math.sin((row + count) * 0.5) * 30;
+                    Math.sin((col + count) * 0.3) * 45 +
+                    Math.sin((row + count) * 0.5) * 45;
                 idx++;
             }
         }
