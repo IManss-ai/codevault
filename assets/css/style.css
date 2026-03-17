@@ -727,7 +727,7 @@ main {
 .home-recent-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: var(--space-md);
+    gap: 12px;
 }
 .home-snippet-card {
     background: rgba(17,20,32,0.7);
@@ -774,8 +774,10 @@ main {
     color: #4a4f63;
     max-height: 52px;
     overflow: hidden;
-    line-height: 1.55;
+    max-height: 52px;
     white-space: pre;
+    text-overflow: ellipsis;
+    line-height: 1.55;
 }
 .home-snippet-footer {
     display: flex;

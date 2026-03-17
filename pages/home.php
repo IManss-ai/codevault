@@ -170,15 +170,10 @@ require BASE_PATH . '/includes/header.php';
 </section>
 <?php endif; ?>
 
-<?php if (!isLoggedIn()): ?>
-<section class="cta-section">
-    <div class="container" style="max-width: 480px;">
-        <h2>Ready to build your code library?</h2>
-        <p>Stop losing snippets in Slack threads and browser bookmarks.</p>
-        <a href="<?= BASE_URL ?>/register" class="btn btn-primary btn-lg">Get started — it's free</a>
-    </div>
+<section class="cta-section" style="text-align: center; padding: 64px 0; border-top: 1px solid #1a1d2a;">
+    <h2 style="font-size: 1.4rem; font-weight: 600; color: #e2e4ea; margin-bottom: 20px;">Ready to build your code library?</h2>
+    <a href="<?= BASE_URL ?>/register" class="btn btn-primary" style="padding: 11px 28px;">Get started — it's free</a>
 </section>
-<?php endif; ?>
 
 </div><!-- /.landing-content -->
 
