@@ -1,9 +1,12 @@
 /**
  * CodeVault — Client-Side JavaScript
- * 
+ *
  * Handles clipboard copy, search filtering, mobile menu,
  * and other interactive features.
  */
+
+// ── Set BASE_URL for JS use ──────────────
+window.BASE_URL = document.querySelector('meta[name="base-url"]')?.content || '/codevault';
 
 // ── Copy to Clipboard ────────────────────
 document.addEventListener('click', function(e) {
@@ -48,16 +51,16 @@ if (searchInput) {
     searchInput.addEventListener('input', function() {
         const query = this.value.toLowerCase();
         const cards = document.querySelectorAll('.snippet-card');
-        
+
         cards.forEach(function(card) {
             const title = (card.dataset.title || '').toLowerCase();
             const tags = (card.dataset.tags || '').toLowerCase();
             const language = (card.dataset.language || '').toLowerCase();
-            
-            const matches = title.includes(query) || 
-                          tags.includes(query) || 
+
+            const matches = title.includes(query) ||
+                          tags.includes(query) ||
                           language.includes(query);
-            
+
             card.style.display = matches ? '' : 'none';
         });
     });
@@ -76,7 +79,7 @@ if (codeTextarea && lineCounter && charCounter) {
         lineCounter.textContent = lines + ' line' + (lines !== 1 ? 's' : '');
         charCounter.textContent = chars + ' char' + (chars !== 1 ? 's' : '');
     }
-    
+
     codeTextarea.addEventListener('input', updateCounters);
     updateCounters(); // Initialize on page load
 
@@ -97,7 +100,7 @@ if (codeTextarea && lineCounter && charCounter) {
 document.addEventListener('click', function(e) {
     const deleteBtn = e.target.closest('[data-confirm]');
     if (!deleteBtn) return;
-    
+
     if (!confirm(deleteBtn.dataset.confirm)) {
         e.preventDefault();
     }
@@ -132,6 +135,12 @@ document.addEventListener('click', function(e) {
                 textNode.textContent = data.starred ? '★' : '☆';
             }
             if (countEl) countEl.textContent = data.count;
+
+            // Pulse animation
+            starBtn.classList.add('pulse');
+            starBtn.addEventListener('animationend', function() {
+                starBtn.classList.remove('pulse');
+            }, { once: true });
         }
     })
     .catch(function(err) {
@@ -139,5 +148,38 @@ document.addEventListener('click', function(e) {
     });
 });
 
-// ── Set BASE_URL for JS use ──────────────
-window.BASE_URL = document.querySelector('meta[name="base-url"]')?.content || '/codevault';
+// ── Mobile Sidebar ───────────────────────
+(function() {
+    const hamburger = document.getElementById('sidebar-toggle');
+    const sidebar   = document.getElementById('app-sidebar');
+    const overlay   = document.getElementById('sidebar-overlay');
+
+    if (!hamburger || !sidebar) return;
+
+    function openSidebar() {
+        sidebar.classList.add('open');
+        hamburger.classList.add('open');
+        if (overlay) overlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeSidebar() {
+        sidebar.classList.remove('open');
+        hamburger.classList.remove('open');
+        if (overlay) overlay.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+
+    hamburger.addEventListener('click', function() {
+        sidebar.classList.contains('open') ? closeSidebar() : openSidebar();
+    });
+
+    if (overlay) {
+        overlay.addEventListener('click', closeSidebar);
+    }
+
+    // Close on resize to desktop
+    window.addEventListener('resize', function() {
+        if (window.innerWidth > 768) closeSidebar();
+    });
+})();

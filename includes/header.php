@@ -20,6 +20,9 @@ $_isLoggedIn = isLoggedIn();
     <!-- Prism.js Theme (Tomorrow Night) -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
 
+    <!-- Prism.js Line Numbers Plugin -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.css" rel="stylesheet">
+
     <!-- CodeVault Styles -->
     <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/style.css">
 </head>
@@ -27,6 +30,14 @@ $_isLoggedIn = isLoggedIn();
 
 <!-- ── Navbar ──────────────────────────────────────────────── -->
 <nav class="navbar">
+
+    <?php if ($_isLoggedIn): ?>
+    <button class="navbar-hamburger" id="sidebar-toggle" aria-label="Toggle sidebar">
+        <div class="navbar-hamburger-lines">
+            <span></span><span></span><span></span>
+        </div>
+    </button>
+    <?php endif; ?>
 
     <!-- Left: brand -->
     <a href="<?= BASE_URL ?>/" class="navbar-brand">
@@ -42,7 +53,7 @@ $_isLoggedIn = isLoggedIn();
     <!-- Guest links shown left-side after brand -->
     <ul class="navbar-guest-links">
         <li><a href="<?= BASE_URL ?>/explore">Explore</a></li>
-        <li><a href="<?= BASE_URL ?>/api/v1/snippets">Docs</a></li>
+        <li><a href="<?= BASE_URL ?>/docs">Docs</a></li>
     </ul>
     <?php endif; ?>
 
@@ -82,6 +93,8 @@ $_isLoggedIn = isLoggedIn();
     <?php endif; ?>
 
 </nav>
+
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
 
 <?php
 // Collect flash messages once — used below in both layout branches

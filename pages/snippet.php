@@ -235,7 +235,7 @@ require BASE_PATH . '/includes/header.php';
             <span><?= sanitize($snippet['language']) ?></span>
             <button class="copy-btn">Copy</button>
         </div>
-        <pre><code class="language-<?= sanitize($prismLang) ?>"><?= sanitize($snippet['code']) ?></code></pre>
+        <pre class="line-numbers"><code class="language-<?= sanitize($prismLang) ?>"><?= sanitize($snippet['code']) ?></code></pre>
     </div>
 
     <!-- Embed code -->

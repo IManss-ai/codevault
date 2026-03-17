@@ -86,7 +86,7 @@ require BASE_PATH . '/includes/header.php';
 
 <?php if (!empty($snippets)): ?>
     <!-- 2-column grid -->
-    <div class="snippet-grid" style="grid-template-columns: repeat(2, 1fr);">
+    <div class="snippet-grid" style="grid-template-columns: repeat(2, 1fr); gap: 12px;">
         <?php foreach ($snippets as $snippet): ?>
             <div class="card">
                 <div class="card-header">

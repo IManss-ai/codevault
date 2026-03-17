@@ -11,7 +11,7 @@
     <span>CodeVault &middot; Open source under MIT</span>
     <div class="site-footer-links">
         <a href="https://github.com/IManss-ai/codevault">GitHub</a>
-        <a href="<?= BASE_URL ?>/api/v1/snippets">API Docs</a>
+        <a href="<?= BASE_URL ?>/docs">API Docs</a>
     </div>
 </footer>
 
@@ -20,6 +20,7 @@
 <!-- Prism.js Core + Autoloader -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
 
 <!-- CodeVault Scripts -->
 <script src="<?= BASE_URL ?>/assets/js/main.js"></script>

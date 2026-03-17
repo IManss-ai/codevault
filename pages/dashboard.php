@@ -101,7 +101,7 @@ require BASE_PATH . '/includes/header.php';
     </div>
 
     <!-- Snippet List (vertical) -->
-    <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+    <div style="display: flex; flex-direction: column; gap: 0.625rem;">
         <?php foreach ($snippets as $snippet): ?>
             <div class="card snippet-card"
                  data-title="<?= sanitize($snippet['title']) ?>"
@@ -129,19 +129,15 @@ require BASE_PATH . '/includes/header.php';
                     </div>
 
                     <!-- Actions -->
-                    <div style="display: flex; gap: 1rem; flex-shrink: 0; padding-top: 2px;">
+                    <div class="snippet-row-actions" style="display: flex; gap: 1rem; flex-shrink: 0; padding-top: 2px;">
                         <a href="<?= BASE_URL ?>/edit/<?= sanitize($snippet['id']) ?>"
-                           style="font-size:0.78rem; color:var(--text-muted); text-decoration:none; transition:color var(--transition);"
-                           onmouseover="this.style.color='var(--text-secondary)'"
-                           onmouseout="this.style.color='var(--text-muted)'">Edit</a>
+                           style="font-size:0.78rem; color:var(--text-muted); text-decoration:none;">Edit</a>
                         <form method="POST" action="<?= BASE_URL ?>/edit/<?= sanitize($snippet['id']) ?>" style="display:inline; margin:0;">
                             <input type="hidden" name="csrf_token" value="<?= generateCSRF() ?>">
                             <input type="hidden" name="action" value="delete">
                             <button type="submit"
                                     data-confirm="Delete this snippet?"
-                                    style="font-size:0.78rem; color:var(--text-muted); background:none; border:none; cursor:pointer; padding:0; font-family:inherit; transition:color var(--transition);"
-                                    onmouseover="this.style.color='var(--danger)'"
-                                    onmouseout="this.style.color='var(--text-muted)'">Delete</button>
+                                    style="font-size:0.78rem; color:var(--text-muted); background:none; border:none; cursor:pointer; padding:0; font-family:inherit;">Delete</button>
                         </form>
                     </div>
                 </div>

@@ -92,15 +92,21 @@ A code snippet manager and knowledge base for developers. Users save, organize, 
 - [x] GitHub Gist import — on /new page, client-side fetch from api.github.com, auto-fills form
 - [x] Export as JSON — /settings?export=json triggers download of all snippets
 - [x] **Complete design overhaul (2026-03-17)** — new dark color system, sidebar layout for auth pages, redesigned all 9 pages
+- [x] **Professional polish + API docs (2026-03-17)** — micro-animations, mobile sidebar, visual depth, api-docs page
 
 ## Design System (v3 — 2026-03-17)
 - Layout: public pages = header + main + footer; auth pages = header + app-layout (sidebar + app-main)
-- Sidebar: 200px, sticky, shows languages/tags from user's snippets, + New button at top
-- Navbar: 44px, guest shows Explore/Docs links + Log in/Sign up; auth shows search bar + avatar
+- Sidebar: 200px, sticky, shows languages/tags from user's snippets, + New button at top; gradient background; active item has 2px left border
+- Navbar: 48px, guest shows Explore/Docs links + Log in/Sign up; auth shows hamburger + search + avatar
 - Auth page navbar: context hint replaces Log in/Sign up buttons (set $authPage = 'login'|'register')
-- Dashboard: vertical snippet list (not grid), "Your vault" title, text link Edit/Delete actions
-- Explore: 2-column grid, language filter pills, code previews
-- home.php pill badge + stats strip; feature cards with small 18px icons in #555a6e
+- Dashboard: vertical snippet list (not grid), "Your vault" title, Edit/Delete revealed on hover (.snippet-row-actions)
+- Explore: 2-column grid (gap:12px), language filter pills, code previews
+- home.php: hero-pill class, feature-icon-wrap circles, section-label, CTA section, stats strip
+- Snippet page: line-numbers Prism plugin on code block
+- /docs route → pages/api-docs.php (no auth required, sidebar if logged in)
+- Mobile: hamburger (#sidebar-toggle) toggles .app-sidebar.open; overlay #sidebar-overlay dims content
+- Animations: fadeIn on page load, slideDown on alerts, starPulse on star toggle, scale(0.98) on btn active
+- CSS: brightness() hover on buttons, inset box-shadow on cards, 6px radius on code blocks
 
 ## Security & Bug Fixes Applied (2026-03-16)
 - **BUG 1 (CRITICAL):** Replaced `bin2hex(random_bytes(16))` with `gen_random_uuid()` via `RETURNING id` in all INSERT statements (auth, new-snippet, snippet fork/star, API create/star)

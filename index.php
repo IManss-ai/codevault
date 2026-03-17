@@ -85,6 +85,10 @@ switch ($page) {
         require BASE_PATH . '/pages/explore.php';
         break;
 
+    case 'docs':
+        require BASE_PATH . '/pages/api-docs.php';
+        break;
+
     case 'settings':
         requireLogin();
         require BASE_PATH . '/pages/settings.php';

@@ -33,11 +33,7 @@ require BASE_PATH . '/includes/header.php';
     <div class="container" style="max-width: 640px;">
 
         <!-- Pill badge -->
-        <div style="margin-bottom: 1.5rem;">
-            <span style="display: inline-block; background: #111420; border: 1px solid #1e2330; border-radius: 20px; padding: 0.25rem 0.875rem; font-size: 0.75rem; color: #555a6e; letter-spacing: 0.01em;">
-                Open source &middot; Self-hostable &middot; Free
-            </span>
-        </div>
+        <span class="hero-pill">Open source &middot; Self-hostable &middot; Free</span>
 
         <h1 style="font-weight: 600; letter-spacing: -0.8px;">Your personal<br>code library</h1>
         <p style="color: #4a4f63; font-size: 1rem; max-width: 460px; margin: 0 auto var(--space-xl);">
@@ -83,46 +79,54 @@ require BASE_PATH . '/includes/header.php';
 <section class="container" style="padding-bottom: var(--space-2xl);">
     <div class="features">
         <div class="feature-card">
-            <svg style="width:18px;height:18px;color:#555a6e;margin-bottom:var(--space-md);"
-                 xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="16 18 22 12 16 6"></polyline>
-                <polyline points="8 6 2 12 8 18"></polyline>
-            </svg>
+            <div class="feature-icon-wrap">
+                <svg style="width:15px;height:15px;color:#555a6e;"
+                     xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="16 18 22 12 16 6"></polyline>
+                    <polyline points="8 6 2 12 8 18"></polyline>
+                </svg>
+            </div>
             <h3>25+ Languages</h3>
             <p>Syntax highlighting for JavaScript, Python, PHP, Go, Rust, and more.</p>
         </div>
 
         <div class="feature-card">
-            <svg style="width:18px;height:18px;color:#555a6e;margin-bottom:var(--space-md);"
-                 xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="11" cy="11" r="8"></circle>
-                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-            </svg>
+            <div class="feature-icon-wrap">
+                <svg style="width:15px;height:15px;color:#555a6e;"
+                     xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+            </div>
             <h3>Instant Search</h3>
             <p>Search by title, tags, or language. Find any snippet in seconds.</p>
         </div>
 
         <div class="feature-card">
-            <svg style="width:18px;height:18px;color:#555a6e;margin-bottom:var(--space-md);"
-                 xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path>
-                <polyline points="16 6 12 2 8 6"></polyline>
-                <line x1="12" y1="2" x2="12" y2="15"></line>
-            </svg>
+            <div class="feature-icon-wrap">
+                <svg style="width:15px;height:15px;color:#555a6e;"
+                     xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path>
+                    <polyline points="16 6 12 2 8 6"></polyline>
+                    <line x1="12" y1="2" x2="12" y2="15"></line>
+                </svg>
+            </div>
             <h3>Share &amp; Embed</h3>
             <p>Public profiles and embeddable widgets. Share your work anywhere.</p>
         </div>
 
         <div class="feature-card">
-            <svg style="width:18px;height:18px;color:#555a6e;margin-bottom:var(--space-md);"
-                 xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
-                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-            </svg>
+            <div class="feature-icon-wrap">
+                <svg style="width:15px;height:15px;color:#555a6e;"
+                     xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                </svg>
+            </div>
             <h3>REST API</h3>
             <p>Key-based API access. Automate your snippet workflow programmatically.</p>
         </div>
@@ -133,7 +137,10 @@ require BASE_PATH . '/includes/header.php';
 <?php if (!empty($recentSnippets)): ?>
 <section class="container" style="padding-bottom: var(--space-3xl);">
     <div class="section-header">
-        <h2>Recently shared</h2>
+        <div>
+            <p class="section-label">Community</p>
+            <h2>Recently shared</h2>
+        </div>
         <a href="<?= BASE_URL ?>/explore" class="btn btn-secondary btn-sm">View all</a>
     </div>
 
@@ -170,6 +177,16 @@ require BASE_PATH . '/includes/header.php';
                 </div>
             </div>
         <?php endforeach; ?>
+    </div>
+</section>
+<?php endif; ?>
+
+<?php if (!isLoggedIn()): ?>
+<section class="cta-section">
+    <div class="container" style="max-width: 480px;">
+        <h2>Ready to build your code library?</h2>
+        <p>Stop losing snippets in Slack threads and browser bookmarks.</p>
+        <a href="<?= BASE_URL ?>/register" class="btn btn-primary btn-lg">Get started free</a>
     </div>
 </section>
 <?php endif; ?>
