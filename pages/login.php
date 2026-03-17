@@ -1,20 +1,18 @@
 <?php
 /**
  * Login Page
- * 
- * Shows a login form and handles authentication.
  */
 
 $pageTitle = 'Log In';
-$errors = [];
-$old = ['email' => ''];
+$authPage  = 'login';
+$errors    = [];
+$old       = ['email' => ''];
 
-// Handle form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!validateCSRF($_POST['csrf_token'] ?? '')) {
         $errors[] = 'Invalid form submission. Please try again.';
     } else {
-        $email = trim($_POST['email'] ?? '');
+        $email    = trim($_POST['email'] ?? '');
         $password = $_POST['password'] ?? '';
         $remember = isset($_POST['remember']);
 
@@ -36,12 +34,10 @@ require BASE_PATH . '/includes/header.php';
 <div class="auth-page">
     <div class="auth-card">
         <h1>Welcome back</h1>
-        <p class="auth-subtitle">Log in to access your code vault.</p>
+        <p class="auth-subtitle">Log in to your code vault.</p>
 
         <?php if (!empty($errors)): ?>
-            <div class="alert alert-error">
-                <?= sanitize($errors[0]) ?>
-            </div>
+            <div class="alert alert-error"><?= sanitize($errors[0]) ?></div>
         <?php endif; ?>
 
         <form method="POST" action="<?= BASE_URL ?>/login" novalidate>
@@ -49,25 +45,25 @@ require BASE_PATH . '/includes/header.php';
 
             <div class="form-group">
                 <label class="form-label" for="email">Email</label>
-                <input 
-                    type="email" 
-                    id="email" 
-                    name="email" 
-                    class="form-input" 
+                <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    class="form-input"
                     value="<?= sanitize($old['email']) ?>"
                     placeholder="you@example.com"
-                    required 
+                    required
                     autofocus
                 >
             </div>
 
             <div class="form-group">
                 <label class="form-label" for="password">Password</label>
-                <input 
-                    type="password" 
-                    id="password" 
-                    name="password" 
-                    class="form-input" 
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    class="form-input"
                     placeholder="Your password"
                     required
                 >
@@ -80,9 +76,7 @@ require BASE_PATH . '/includes/header.php';
                 </label>
             </div>
 
-            <button type="submit" class="btn btn-primary btn-block btn-lg">
-                Log In
-            </button>
+            <button type="submit" class="btn btn-primary btn-block btn-lg">Log In</button>
         </form>
 
         <div class="auth-footer">

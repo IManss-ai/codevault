@@ -1,6 +1,7 @@
 <?php
 // $pageTitle should be set by the page before including header.php
 $pageTitle = isset($pageTitle) ? $pageTitle . ' — CodeVault' : 'CodeVault';
+$_isLoggedIn = isLoggedIn();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -11,10 +12,10 @@ $pageTitle = isset($pageTitle) ? $pageTitle . ' — CodeVault' : 'CodeVault';
     <meta name="description" content="CodeVault — Your personal code snippet library. Save, organize, search, and share code.">
     <meta name="base-url" content="<?= BASE_URL ?>">
 
-    <!-- Fonts -->
+    <!-- Fonts: JetBrains Mono for code only; UI uses system stack -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 
     <!-- Prism.js Theme (Tomorrow Night) -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
@@ -24,55 +25,93 @@ $pageTitle = isset($pageTitle) ? $pageTitle . ' — CodeVault' : 'CodeVault';
 </head>
 <body>
 
-<!-- Navigation -->
+<!-- ── Navbar ──────────────────────────────────────────────── -->
 <nav class="navbar">
-    <div class="navbar-inner">
-        <a href="<?= BASE_URL ?>/" class="navbar-brand">
-            <!-- Code bracket icon -->
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="16 18 22 12 16 6"></polyline>
-                <polyline points="8 6 2 12 8 18"></polyline>
+
+    <!-- Left: brand -->
+    <a href="<?= BASE_URL ?>/" class="navbar-brand">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="16 18 22 12 16 6"></polyline>
+            <polyline points="8 6 2 12 8 18"></polyline>
+        </svg>
+        CodeVault
+    </a>
+
+    <?php if (!$_isLoggedIn): ?>
+    <!-- Guest links shown left-side after brand -->
+    <ul class="navbar-guest-links">
+        <li><a href="<?= BASE_URL ?>/explore">Explore</a></li>
+        <li><a href="<?= BASE_URL ?>/api/v1/snippets">Docs</a></li>
+    </ul>
+    <?php endif; ?>
+
+    <div class="navbar-spacer"></div>
+
+    <?php if ($_isLoggedIn): ?>
+        <!-- Search placeholder -->
+        <div class="navbar-search">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
             </svg>
-            CodeVault
+            <span class="navbar-search-text">Search...</span>
+            <span class="navbar-search-kbd">⌘K</span>
+        </div>
+
+        <!-- User avatar -->
+        <a href="<?= BASE_URL ?>/u/<?= sanitize(currentUsername()) ?>" class="navbar-avatar">
+            <?= strtoupper(substr(currentUsername(), 0, 1)) ?>
         </a>
 
-        <!-- Mobile hamburger -->
-        <button class="navbar-toggle" onclick="document.querySelector('.navbar-links').classList.toggle('active')" aria-label="Toggle navigation">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <line x1="3" y1="12" x2="21" y2="12"></line>
-                <line x1="3" y1="6" x2="21" y2="6"></line>
-                <line x1="3" y1="18" x2="21" y2="18"></line>
-            </svg>
-        </button>
-
-        <ul class="navbar-links">
-            <li><a href="<?= BASE_URL ?>/explore">Explore</a></li>
-            <?php if (isLoggedIn()): ?>
-                <li><a href="<?= BASE_URL ?>/dashboard">Dashboard</a></li>
-                <li><a href="<?= BASE_URL ?>/new" class="btn btn-primary btn-sm">+ New Snippet</a></li>
-                <li><a href="<?= BASE_URL ?>/u/<?= sanitize(currentUsername()) ?>"><?= sanitize(currentUsername()) ?></a></li>
-                <li><a href="<?= BASE_URL ?>/settings">Settings</a></li>
-                <li><a href="<?= BASE_URL ?>/logout">Logout</a></li>
+    <?php else: ?>
+        <!-- Guest auth buttons (or page-specific hint on login/register pages) -->
+        <div class="navbar-auth">
+            <?php if (($authPage ?? '') === 'login'): ?>
+                <span style="font-size:0.8rem; color:var(--text-muted);">Don't have an account?</span>
+                <a href="<?= BASE_URL ?>/register" class="btn btn-primary btn-sm">Sign up</a>
+            <?php elseif (($authPage ?? '') === 'register'): ?>
+                <span style="font-size:0.8rem; color:var(--text-muted);">Already have an account?</span>
+                <a href="<?= BASE_URL ?>/login" class="btn btn-primary btn-sm">Log in</a>
             <?php else: ?>
-                <li><a href="<?= BASE_URL ?>/login">Log In</a></li>
-                <li><a href="<?= BASE_URL ?>/register" class="btn btn-primary btn-sm">Sign Up</a></li>
+                <a href="<?= BASE_URL ?>/login" class="btn-login">Log in</a>
+                <a href="<?= BASE_URL ?>/register" class="btn btn-primary btn-sm">Sign up</a>
             <?php endif; ?>
-        </ul>
-    </div>
+        </div>
+    <?php endif; ?>
+
 </nav>
 
-<main>
 <?php
-// Show flash messages if any
-$flashError = getFlash('flash_error');
-$flashSuccess = getFlash('flash_success');
-if ($flashError): ?>
-    <div class="container mt-md">
-        <div class="alert alert-error"><?= sanitize($flashError) ?></div>
-    </div>
-<?php endif;
-if ($flashSuccess): ?>
-    <div class="container mt-md">
-        <div class="alert alert-success"><?= sanitize($flashSuccess) ?></div>
-    </div>
+// Collect flash messages once — used below in both layout branches
+$_flashError   = getFlash('flash_error');
+$_flashSuccess = getFlash('flash_success');
+?>
+
+<?php if ($_isLoggedIn): ?>
+<!-- ── App layout: sidebar + main ──────────────────────────── -->
+<div class="app-layout">
+    <?php require BASE_PATH . '/includes/sidebar.php'; ?>
+    <div class="app-main">
+        <?php if ($_flashError): ?>
+            <div class="alert alert-error mb-md"><?= sanitize($_flashError) ?></div>
+        <?php endif; ?>
+        <?php if ($_flashSuccess): ?>
+            <div class="alert alert-success mb-md"><?= sanitize($_flashSuccess) ?></div>
+        <?php endif; ?>
+
+<?php else: ?>
+<!-- ── Public layout: full-width main ──────────────────────── -->
+<main>
+    <?php if ($_flashError): ?>
+        <div class="container mt-md">
+            <div class="alert alert-error"><?= sanitize($_flashError) ?></div>
+        </div>
+    <?php endif; ?>
+    <?php if ($_flashSuccess): ?>
+        <div class="container mt-md">
+            <div class="alert alert-success"><?= sanitize($_flashSuccess) ?></div>
+        </div>
+    <?php endif; ?>
 <?php endif; ?>

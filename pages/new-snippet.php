@@ -1,18 +1,16 @@
 <?php
 /**
  * New Snippet Page
- * 
- * Form to create a new code snippet.
  */
 
 $pageTitle = 'New Snippet';
-$errors = [];
-$old = [
+$page      = 'new';
+$errors    = [];
+$old       = [
     'title' => '', 'description' => '', 'code' => '',
     'language' => 'javascript', 'tags' => '', 'is_public' => true,
 ];
 
-// Handle form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!validateCSRF($_POST['csrf_token'] ?? '')) {
         $errors[] = 'Invalid form submission. Please try again.';
@@ -27,21 +25,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $old = compact('title', 'description', 'code', 'language', 'tags');
         $old['is_public'] = $isPublic;
 
-        // Validate
-        if (empty($title))    $errors[] = 'Title is required.';
+        if (empty($title))        $errors[] = 'Title is required.';
         if (strlen($title) > 255) $errors[] = 'Title must be 255 characters or less.';
-        if (empty($code))     $errors[] = 'Code content is required.';
-        if (empty($language)) $errors[] = 'Please select a language.';
+        if (empty($code))         $errors[] = 'Code content is required.';
+        if (empty($language))     $errors[] = 'Please select a language.';
 
         if (empty($errors)) {
-            $pdo = Database::connect();
-
+            $pdo  = Database::connect();
             $stmt = $pdo->prepare('
                 INSERT INTO snippets (user_id, title, description, code, language, tags, is_public, view_count, created_at, updated_at)
                 VALUES (:user_id, :title, :description, :code, :language, :tags, :is_public, 0, NOW(), NOW())
                 RETURNING id
             ');
-
             try {
                 $stmt->execute([
                     ':user_id'     => currentUserId(),
@@ -53,8 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     ':is_public'   => $isPublic ? 'true' : 'false',
                 ]);
                 $id = $stmt->fetchColumn();
-
-                setFlash('flash_success', 'Snippet created successfully!');
+                setFlash('flash_success', 'Snippet created!');
                 redirect(BASE_URL . '/snippet/' . $id);
             } catch (PDOException $e) {
                 error_log('Create snippet error: ' . $e->getMessage());
@@ -68,17 +62,19 @@ $languages = getSupportedLanguages();
 require BASE_PATH . '/includes/header.php';
 ?>
 
-<div class="container" style="max-width: 800px;">
+<div style="max-width: 560px;">
+
     <div class="page-header">
-        <h1>Create New Snippet</h1>
+        <h1>New snippet</h1>
     </div>
 
     <!-- GitHub Gist Import -->
     <div class="card mb-xl" id="gist-import-card">
-        <h2 style="font-size: 1rem; margin-bottom: var(--space-md);">Import from GitHub Gist</h2>
+        <h2 style="font-size: 0.875rem; font-weight: 600; color: var(--text-secondary); margin-bottom: var(--space-md);">
+            Import from GitHub Gist
+        </h2>
         <div class="flex gap-md" style="align-items: flex-end; flex-wrap: wrap;">
-            <div class="form-group" style="flex: 1; min-width: 260px; margin-bottom: 0;">
-                <label class="form-label" for="gist-url">Gist URL</label>
+            <div class="form-group" style="flex: 1; min-width: 200px; margin-bottom: 0;">
                 <input type="url" id="gist-url" class="form-input"
                        placeholder="https://gist.github.com/user/abc123">
             </div>
@@ -88,7 +84,7 @@ require BASE_PATH . '/includes/header.php';
     </div>
 
     <?php if (!empty($errors)): ?>
-        <div class="alert alert-error"><?= sanitize($errors[0]) ?></div>
+        <div class="alert alert-error mb-lg"><?= sanitize($errors[0]) ?></div>
     <?php endif; ?>
 
     <form method="POST" action="<?= BASE_URL ?>/new" novalidate>
@@ -103,12 +99,12 @@ require BASE_PATH . '/includes/header.php';
 
         <div class="form-group">
             <label class="form-label" for="description">Description <span class="text-muted">(optional)</span></label>
-            <textarea id="description" name="description" class="form-textarea" rows="3"
+            <textarea id="description" name="description" class="form-textarea" rows="2"
                       placeholder="What does this code do?"><?= sanitize($old['description']) ?></textarea>
         </div>
 
-        <div class="flex gap-md" style="flex-wrap:wrap;">
-            <div class="form-group" style="flex:1; min-width:200px;">
+        <div class="flex gap-md" style="flex-wrap: wrap;">
+            <div class="form-group" style="flex: 1; min-width: 160px;">
                 <label class="form-label" for="language">Language</label>
                 <select id="language" name="language" class="form-select" required>
                     <?php foreach ($languages as $key => $name): ?>
@@ -119,11 +115,11 @@ require BASE_PATH . '/includes/header.php';
                 </select>
             </div>
 
-            <div class="form-group" style="flex:1; min-width:200px;">
+            <div class="form-group" style="flex: 1; min-width: 160px;">
                 <label class="form-label" for="tags">Tags <span class="text-muted">(comma separated)</span></label>
                 <input type="text" id="tags" name="tags" class="form-input"
                        value="<?= sanitize($old['tags']) ?>"
-                       placeholder="e.g. react, hooks, debounce">
+                       placeholder="react, hooks, api">
             </div>
         </div>
 
@@ -131,7 +127,7 @@ require BASE_PATH . '/includes/header.php';
             <label class="form-label" for="code-editor">Code</label>
             <textarea id="code-editor" name="code" class="form-textarea form-code-textarea"
                       placeholder="Paste your code here..." required><?= sanitize($old['code']) ?></textarea>
-            <div class="flex justify-between mt-sm" style="font-size: 0.8rem; color: var(--text-muted);">
+            <div class="flex justify-between mt-sm" style="font-size: 0.75rem; color: var(--text-hint);">
                 <span id="line-count">0 lines</span>
                 <span id="char-count">0 chars</span>
             </div>
@@ -146,15 +142,14 @@ require BASE_PATH . '/includes/header.php';
         </div>
 
         <div class="flex gap-md">
-            <button type="submit" class="btn btn-primary btn-lg">Save Snippet</button>
-            <a href="<?= BASE_URL ?>/dashboard" class="btn btn-secondary btn-lg">Cancel</a>
+            <button type="submit" class="btn btn-primary">Save Snippet</button>
+            <a href="<?= BASE_URL ?>/dashboard" class="btn btn-secondary">Cancel</a>
         </div>
     </form>
 </div>
 
 <script>
 (function () {
-    // Map GitHub Gist language names to CodeVault supported language keys
     var langMap = {
         'JavaScript': 'javascript', 'TypeScript': 'typescript',
         'Python': 'python', 'PHP': 'php', 'HTML': 'html', 'CSS': 'css',
@@ -180,7 +175,6 @@ require BASE_PATH . '/includes/header.php';
         var raw = urlEl.value.trim();
         if (!raw) { showStatus('Please enter a Gist URL.', true); return; }
 
-        // Extract Gist ID from URL: https://gist.github.com/user/GIST_ID
         var match = raw.match(/gist\.github\.com\/[^\/]+\/([a-f0-9]+)/i);
         if (!match) { showStatus('Invalid Gist URL. Expected: https://gist.github.com/user/id', true); return; }
 
@@ -197,16 +191,15 @@ require BASE_PATH . '/includes/header.php';
             return res.json();
         })
         .then(function (data) {
-            var files = data.files;
+            var files     = data.files;
             var fileNames = Object.keys(files);
             if (!fileNames.length) throw new Error('This Gist has no files.');
 
-            var file = files[fileNames[0]]; // use first file
-            var content = file.content || '';
-            var gistLang = file.language || '';
+            var file       = files[fileNames[0]];
+            var content    = file.content || '';
+            var gistLang   = file.language || '';
             var mappedLang = langMap[gistLang] || 'javascript';
 
-            // Pre-fill form fields
             document.getElementById('title').value       = file.filename || '';
             document.getElementById('description').value = (data.description || '').trim();
             document.getElementById('code-editor').value = content;
@@ -219,11 +212,8 @@ require BASE_PATH . '/includes/header.php';
                 }
             }
 
-            // Trigger line/char counter update
             document.getElementById('code-editor').dispatchEvent(new Event('input'));
-
             showStatus('Imported "' + file.filename + '" successfully!', false);
-            document.getElementById('gist-import-card').scrollIntoView({ behavior: 'smooth' });
         })
         .catch(function (err) {
             showStatus(err.message || 'Failed to fetch Gist.', true);

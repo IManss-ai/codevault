@@ -1,22 +1,20 @@
 <?php
 /**
  * Settings Page
- * 
- * Manage account settings and API keys.
  */
 
 $pageTitle = 'Settings';
-$pdo = Database::connect();
-$userId = currentUserId();
-$errors = [];
+$page      = 'settings';
+$pdo       = Database::connect();
+$userId    = currentUserId();
+$errors    = [];
 $newApiKey = null;
 
-// Fetch current user data
 $stmt = $pdo->prepare('SELECT username, email, bio, website, api_key FROM users WHERE id = :id');
 $stmt->execute([':id' => $userId]);
 $user = $stmt->fetch();
 
-// Handle JSON export (GET with ?export=json)
+// JSON export
 if (($_GET['export'] ?? '') === 'json') {
     $stmt = $pdo->prepare('
         SELECT id, title, description, code, language, tags, is_public,
@@ -28,12 +26,7 @@ if (($_GET['export'] ?? '') === 'json') {
     $stmt->execute([':uid' => $userId]);
     $snippets = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    $export = [
-        'exported_at' => date('c'),
-        'username'    => $user['username'],
-        'snippets'    => $snippets,
-    ];
-
+    $export   = ['exported_at' => date('c'), 'username' => $user['username'], 'snippets' => $snippets];
     $filename = 'codevault-export-' . date('Y-m-d') . '.json';
     header('Content-Type: application/json');
     header('Content-Disposition: attachment; filename="' . $filename . '"');
@@ -41,7 +34,6 @@ if (($_GET['export'] ?? '') === 'json') {
     exit;
 }
 
-// Handle form submissions
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $action = $_POST['action'] ?? '';
 
@@ -52,14 +44,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             case 'update_profile':
                 $bio     = trim($_POST['bio'] ?? '');
                 $website = trim($_POST['website'] ?? '');
-
                 if (!empty($website) && !filter_var($website, FILTER_VALIDATE_URL)) {
                     $errors[] = 'Please enter a valid URL for your website.';
                     break;
                 }
-
-                $stmt = $pdo->prepare('UPDATE users SET bio = :bio, website = :website WHERE id = :id');
-                $stmt->execute([':bio' => $bio, ':website' => $website, ':id' => $userId]);
+                $pdo->prepare('UPDATE users SET bio = :bio, website = :website WHERE id = :id')
+                    ->execute([':bio' => $bio, ':website' => $website, ':id' => $userId]);
                 $user['bio'] = $bio;
                 $user['website'] = $website;
                 setFlash('flash_success', 'Profile updated!');
@@ -67,13 +57,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 break;
 
             case 'generate_api_key':
-                $rawKey = generateApiKey();
+                $rawKey    = generateApiKey();
                 $hashedKey = hashApiKey($rawKey);
-
-                $stmt = $pdo->prepare('UPDATE users SET api_key = :key WHERE id = :id');
-                $stmt->execute([':key' => $hashedKey, ':id' => $userId]);
+                $pdo->prepare('UPDATE users SET api_key = :key WHERE id = :id')
+                    ->execute([':key' => $hashedKey, ':id' => $userId]);
                 $user['api_key'] = $hashedKey;
-                $newApiKey = $rawKey; // Show once to user
+                $newApiKey = $rawKey;
                 break;
 
             case 'change_password':
@@ -81,10 +70,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $newPass     = $_POST['new_password'] ?? '';
                 $confirmPass = $_POST['confirm_password'] ?? '';
 
-                // Verify current password
-                $stmt = $pdo->prepare('SELECT password_hash FROM users WHERE id = :id');
-                $stmt->execute([':id' => $userId]);
-                $row = $stmt->fetch();
+                $row = $pdo->prepare('SELECT password_hash FROM users WHERE id = :id');
+                $row->execute([':id' => $userId]);
+                $row = $row->fetch();
 
                 if (!password_verify($currentPass, $row['password_hash'])) {
                     $errors[] = 'Current password is incorrect.';
@@ -98,10 +86,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $errors[] = 'New passwords do not match.';
                     break;
                 }
-
                 $hash = password_hash($newPass, PASSWORD_BCRYPT);
-                $stmt = $pdo->prepare('UPDATE users SET password_hash = :hash WHERE id = :id');
-                $stmt->execute([':hash' => $hash, ':id' => $userId]);
+                $pdo->prepare('UPDATE users SET password_hash = :hash WHERE id = :id')
+                    ->execute([':hash' => $hash, ':id' => $userId]);
                 setFlash('flash_success', 'Password changed successfully!');
                 redirect(BASE_URL . '/settings');
                 break;
@@ -112,16 +99,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 require BASE_PATH . '/includes/header.php';
 ?>
 
-<div class="container" style="max-width: 700px;">
-    <h1 class="mb-xl">Settings</h1>
+<div style="max-width: 600px;">
+
+    <div class="page-header">
+        <h1>Settings</h1>
+    </div>
 
     <?php if (!empty($errors)): ?>
-        <div class="alert alert-error"><?= sanitize($errors[0]) ?></div>
+        <div class="alert alert-error mb-lg"><?= sanitize($errors[0]) ?></div>
     <?php endif; ?>
 
-    <!-- Profile Section -->
+    <!-- Profile -->
     <div class="card mb-xl">
-        <h2 style="font-size: 1.15rem; margin-bottom: var(--space-lg);">Profile</h2>
+        <h2 style="font-size: 1rem; font-weight: 600; color: var(--text-secondary); margin-bottom: var(--space-lg);">Profile</h2>
         <form method="POST">
             <input type="hidden" name="csrf_token" value="<?= generateCSRF() ?>">
             <input type="hidden" name="action" value="update_profile">
@@ -139,7 +129,7 @@ require BASE_PATH . '/includes/header.php';
 
             <div class="form-group">
                 <label class="form-label" for="bio">Bio</label>
-                <textarea id="bio" name="bio" class="form-textarea" rows="3"
+                <textarea id="bio" name="bio" class="form-textarea" rows="2"
                           placeholder="Tell other developers about yourself"><?= sanitize($user['bio'] ?? '') ?></textarea>
             </div>
 
@@ -154,20 +144,18 @@ require BASE_PATH . '/includes/header.php';
         </form>
     </div>
 
-    <!-- API Key Section -->
+    <!-- API Key -->
     <div class="card mb-xl">
-        <h2 style="font-size: 1.15rem; margin-bottom: var(--space-lg);">API Key</h2>
+        <h2 style="font-size: 1rem; font-weight: 600; color: var(--text-secondary); margin-bottom: var(--space-lg);">API Key</h2>
 
         <?php if ($newApiKey): ?>
-            <div class="alert alert-success">
-                Your new API key (shown once — copy it now!):
-            </div>
+            <div class="alert alert-success mb-md">Your new API key — copy it now, it won't be shown again.</div>
             <div class="code-block mb-lg">
                 <pre style="padding: var(--space-md);"><code><?= sanitize($newApiKey) ?></code></pre>
             </div>
         <?php endif; ?>
 
-        <p class="text-secondary mb-md" style="font-size: 0.9rem;">
+        <p style="font-size: 0.875rem; color: var(--text-muted); margin-bottom: var(--space-lg);">
             <?php if (!empty($user['api_key'])): ?>
                 You have an active API key. Generate a new one to replace it.
             <?php else: ?>
@@ -185,18 +173,18 @@ require BASE_PATH . '/includes/header.php';
         </form>
     </div>
 
-    <!-- Export Section -->
+    <!-- Export -->
     <div class="card mb-xl">
-        <h2 style="font-size: 1.15rem; margin-bottom: var(--space-sm);">Export Your Vault</h2>
-        <p class="text-secondary mb-lg" style="font-size: 0.9rem;">
-            Download all your snippets as a JSON file. Includes titles, descriptions, code, tags, and metadata.
+        <h2 style="font-size: 1rem; font-weight: 600; color: var(--text-secondary); margin-bottom: var(--space-sm);">Export Your Vault</h2>
+        <p style="font-size: 0.875rem; color: var(--text-muted); margin-bottom: var(--space-lg);">
+            Download all your snippets as a JSON file including titles, descriptions, code, tags, and metadata.
         </p>
         <a href="<?= BASE_URL ?>/settings?export=json" class="btn btn-secondary">Download JSON</a>
     </div>
 
-    <!-- Change Password Section -->
+    <!-- Change Password -->
     <div class="card mb-xl">
-        <h2 style="font-size: 1.15rem; margin-bottom: var(--space-lg);">Change Password</h2>
+        <h2 style="font-size: 1rem; font-weight: 600; color: var(--text-secondary); margin-bottom: var(--space-lg);">Change Password</h2>
         <form method="POST">
             <input type="hidden" name="csrf_token" value="<?= generateCSRF() ?>">
             <input type="hidden" name="action" value="change_password">
@@ -219,6 +207,7 @@ require BASE_PATH . '/includes/header.php';
             <button type="submit" class="btn btn-primary">Change Password</button>
         </form>
     </div>
+
 </div>
 
 <?php require BASE_PATH . '/includes/footer.php'; ?>

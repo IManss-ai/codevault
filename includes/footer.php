@@ -1,12 +1,23 @@
+<?php $_footerIsLoggedIn = isLoggedIn(); ?>
+
+<?php if ($_footerIsLoggedIn): ?>
+    </div><!-- /.app-main -->
+</div><!-- /.app-layout -->
+
+<?php else: ?>
 </main>
 
 <footer class="site-footer">
-    <div class="container">
-        <p>&copy; <?= date('Y') ?> <a href="<?= BASE_URL ?>/">CodeVault</a> &mdash; Your personal code snippet library.</p>
+    <span>CodeVault &middot; Open source under MIT</span>
+    <div class="site-footer-links">
+        <a href="https://github.com/IManss-ai/codevault">GitHub</a>
+        <a href="<?= BASE_URL ?>/api/v1/snippets">API Docs</a>
     </div>
 </footer>
 
-<!-- Prism.js Core + Autoloader (loads language grammars on demand) -->
+<?php endif; ?>
+
+<!-- Prism.js Core + Autoloader -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
 

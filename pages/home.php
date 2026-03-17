@@ -1,27 +1,20 @@
 <?php
 /**
  * Landing Page
- * 
- * The public home page for CodeVault. Shows a hero section,
- * feature highlights, and recent public snippets.
  */
 
 $pageTitle = 'Your Personal Code Library';
-
-// Fetch stats and recent snippets
 $pdo = Database::connect();
 
-// Total public snippets count
 $stmt = $pdo->query('SELECT COUNT(*) as total FROM snippets WHERE is_public = true');
 $totalSnippets = $stmt->fetch()['total'] ?? 0;
 
-// Total users count
 $stmt = $pdo->query('SELECT COUNT(*) as total FROM users');
 $totalUsers = $stmt->fetch()['total'] ?? 0;
 
-// 6 most recent public snippets with author info
+// 6 most recent public snippets with author info + code preview
 $stmt = $pdo->query('
-    SELECT s.id, s.title, s.language, s.tags, s.created_at,
+    SELECT s.id, s.title, s.language, s.tags, s.code, s.created_at,
            u.username,
            (SELECT COUNT(*) FROM stars WHERE snippet_id = s.id) as star_count
     FROM snippets s
@@ -37,77 +30,111 @@ require BASE_PATH . '/includes/header.php';
 
 <!-- Hero Section -->
 <section class="hero">
-    <div class="container">
-        <h1>Save your code.<br><span>Find it instantly.</span></h1>
-        <p>
-            CodeVault is your personal, searchable library of every useful piece of code 
-            you've ever written. Organize with tags, share with the world, and access 
-            from anywhere.
+    <div class="container" style="max-width: 640px;">
+
+        <!-- Pill badge -->
+        <div style="margin-bottom: 1.5rem;">
+            <span style="display: inline-block; background: #111420; border: 1px solid #1e2330; border-radius: 20px; padding: 0.25rem 0.875rem; font-size: 0.75rem; color: #555a6e; letter-spacing: 0.01em;">
+                Open source &middot; Self-hostable &middot; Free
+            </span>
+        </div>
+
+        <h1 style="font-weight: 600; letter-spacing: -0.8px;">Your personal<br>code library</h1>
+        <p style="color: #4a4f63; font-size: 1rem; max-width: 460px; margin: 0 auto var(--space-xl);">
+            Save snippets you'll actually find again. Search by language, tag, or title.
+            Share what's useful, keep the rest private.
         </p>
+
         <div class="hero-actions">
             <?php if (isLoggedIn()): ?>
                 <a href="<?= BASE_URL ?>/dashboard" class="btn btn-primary btn-lg">Go to Dashboard</a>
             <?php else: ?>
-                <a href="<?= BASE_URL ?>/register" class="btn btn-primary btn-lg">Get Started — Free</a>
+                <a href="<?= BASE_URL ?>/register" class="btn btn-primary btn-lg">Get started</a>
             <?php endif; ?>
-            <a href="<?= BASE_URL ?>/explore" class="btn btn-secondary btn-lg">Explore Snippets</a>
+            <a href="https://github.com/IManss-ai/codevault" target="_blank" rel="noopener"
+               class="btn btn-secondary btn-lg">View on GitHub</a>
         </div>
+
+        <!-- Stats strip -->
         <?php if ($totalSnippets > 0 || $totalUsers > 0): ?>
-            <p class="text-muted mt-lg" style="font-size: 0.9rem;">
-                <?= number_format($totalSnippets) ?> public snippets from <?= number_format($totalUsers) ?> developers
-            </p>
+        <div style="display: flex; justify-content: center; gap: 2.5rem; margin-top: 2rem; flex-wrap: wrap;">
+            <div style="text-align: center;">
+                <div style="font-size: 1.25rem; font-weight: 700; color: var(--text-primary); letter-spacing: -0.02em;">
+                    <?= number_format($totalSnippets) ?>
+                </div>
+                <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 2px;">public snippets</div>
+            </div>
+            <div style="text-align: center;">
+                <div style="font-size: 1.25rem; font-weight: 700; color: var(--text-primary); letter-spacing: -0.02em;">
+                    <?= number_format($totalUsers) ?>
+                </div>
+                <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 2px;">developers</div>
+            </div>
+            <div style="text-align: center;">
+                <div style="font-size: 1.25rem; font-weight: 700; color: var(--text-primary); letter-spacing: -0.02em;">25+</div>
+                <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 2px;">languages</div>
+            </div>
+        </div>
         <?php endif; ?>
     </div>
 </section>
 
 <!-- Features Section -->
-<section class="container">
+<section class="container" style="padding-bottom: var(--space-2xl);">
     <div class="features">
         <div class="feature-card">
-            <svg class="feature-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <svg style="width:18px;height:18px;color:#555a6e;margin-bottom:var(--space-md);"
+                 xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <polyline points="16 18 22 12 16 6"></polyline>
                 <polyline points="8 6 2 12 8 18"></polyline>
             </svg>
-            <h3>20+ Languages</h3>
-            <p>Syntax highlighting for JavaScript, Python, PHP, Go, Rust, and many more. Your code looks beautiful.</p>
+            <h3>25+ Languages</h3>
+            <p>Syntax highlighting for JavaScript, Python, PHP, Go, Rust, and more.</p>
         </div>
 
         <div class="feature-card">
-            <svg class="feature-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <svg style="width:18px;height:18px;color:#555a6e;margin-bottom:var(--space-md);"
+                 xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <circle cx="11" cy="11" r="8"></circle>
                 <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
             </svg>
             <h3>Instant Search</h3>
-            <p>Full-text search across titles, tags, and code content. Find that snippet in seconds, not minutes.</p>
+            <p>Search by title, tags, or language. Find any snippet in seconds.</p>
         </div>
 
         <div class="feature-card">
-            <svg class="feature-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <svg style="width:18px;height:18px;color:#555a6e;margin-bottom:var(--space-md);"
+                 xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path>
                 <polyline points="16 6 12 2 8 6"></polyline>
                 <line x1="12" y1="2" x2="12" y2="15"></line>
             </svg>
             <h3>Share &amp; Embed</h3>
-            <p>Public profiles, an explore page, and embeddable widgets. Share your best code on blogs and Stack Overflow.</p>
+            <p>Public profiles and embeddable widgets. Share your work anywhere.</p>
         </div>
 
         <div class="feature-card">
-            <svg class="feature-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <svg style="width:18px;height:18px;color:#555a6e;margin-bottom:var(--space-md);"
+                 xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
                 <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
             </svg>
             <h3>REST API</h3>
-            <p>Full API access with key-based auth. Create, read, update, and delete snippets programmatically.</p>
+            <p>Key-based API access. Automate your snippet workflow programmatically.</p>
         </div>
     </div>
 </section>
 
-<!-- Recent Public Snippets -->
+<!-- Recently Shared -->
 <?php if (!empty($recentSnippets)): ?>
 <section class="container" style="padding-bottom: var(--space-3xl);">
     <div class="section-header">
-        <h2>Recently Added</h2>
-        <a href="<?= BASE_URL ?>/explore" class="btn btn-secondary btn-sm">View All</a>
+        <h2>Recently shared</h2>
+        <a href="<?= BASE_URL ?>/explore" class="btn btn-secondary btn-sm">View all</a>
     </div>
 
     <div class="snippet-grid">
@@ -122,18 +149,22 @@ require BASE_PATH . '/includes/header.php';
                     <span class="badge badge-language"><?= sanitize($snippet['language']) ?></span>
                 </div>
 
+                <?php if (!empty($snippet['code'])): ?>
+                    <div class="snippet-preview"><?= sanitize(truncate($snippet['code'], 100)) ?></div>
+                <?php endif; ?>
+
                 <?php if (!empty($snippet['tags'])): ?>
-                    <div class="tags">
-                        <?php foreach (explode(',', $snippet['tags']) as $tag): ?>
+                    <div class="tags mt-sm">
+                        <?php foreach (array_slice(explode(',', $snippet['tags']), 0, 3) as $tag): ?>
                             <span class="badge badge-tag"><?= sanitize(trim($tag)) ?></span>
                         <?php endforeach; ?>
                     </div>
                 <?php endif; ?>
 
                 <div class="card-meta">
-                    <span>
-                        <a href="<?= BASE_URL ?>/u/<?= sanitize($snippet['username']) ?>"><?= sanitize($snippet['username']) ?></a>
-                    </span>
+                    <a href="<?= BASE_URL ?>/u/<?= sanitize($snippet['username']) ?>">
+                        <?= sanitize($snippet['username']) ?>
+                    </a>
                     <span>★ <?= (int)$snippet['star_count'] ?></span>
                     <span><?= timeAgo($snippet['created_at']) ?></span>
                 </div>
