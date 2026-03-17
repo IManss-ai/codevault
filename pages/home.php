@@ -29,7 +29,7 @@ require BASE_PATH . '/includes/header.php';
 ?>
 
 <div id="wave-container"></div>
-<div class="wave-overlay">
+<div class="landing-content">
 
 <!-- Hero Section -->
 <section class="hero">
@@ -194,7 +194,7 @@ require BASE_PATH . '/includes/header.php';
 </section>
 <?php endif; ?>
 
-</div><!-- /.wave-overlay -->
+</div><!-- /.landing-content -->
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="<?= BASE_URL ?>/assets/js/wave-bg.js"></script>

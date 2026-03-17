@@ -1336,15 +1336,7 @@ main {
     pointer-events: none;
 }
 
-.wave-overlay {
-    position: relative;
-    z-index: 1;
-}
-
-.hero,
-.features,
-.recent-section,
-.cta-section {
+.landing-content {
     position: relative;
     z-index: 1;
 }
