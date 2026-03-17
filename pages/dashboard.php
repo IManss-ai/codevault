@@ -110,11 +110,14 @@ require BASE_PATH . '/includes/header.php';
 
                 <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem;">
                     <div style="min-width: 0;">
-                        <h3 class="card-title" style="margin-bottom: 0.375rem;">
+                        <h3 class="card-title" style="margin-bottom: 0.25rem;">
                             <a href="<?= BASE_URL ?>/snippet/<?= sanitize($snippet['id']) ?>">
                                 <?= sanitize($snippet['title']) ?>
                             </a>
                         </h3>
+                        <?php if (!empty($snippet['description'])): ?>
+                            <div class="snippet-description"><?= sanitize($snippet['description']) ?></div>
+                        <?php endif; ?>
                         <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
                             <span class="badge badge-language"><?= sanitize($snippet['language']) ?></span>
                             <?php if ($snippet['is_public']): ?>

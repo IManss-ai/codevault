@@ -20,7 +20,9 @@ session_start([
 ]);
 
 // Get the requested URL path, default to empty string (home)
-$url = $_GET['url'] ?? trim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), '/');
+$uri = trim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), '/');
+$base = trim($_ENV['BASE_URL'] ?? 'codevault', '/');
+$url = $_GET['url'] ?? (str_starts_with($uri, $base) ? trim(substr($uri, strlen($base)), '/') : $uri);
 
 // Split the URL into segments: "edit/abc-123" → ["edit", "abc-123"]
 $segments = $url ? explode('/', $url) : [];

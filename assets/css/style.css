@@ -942,6 +942,7 @@ main {
     flex: 1;
     min-width: 120px;
     transition: border-color var(--transition);
+    border-left: none;
 }
 .stat-item:hover {
     border-color: var(--border-hover);
@@ -1267,24 +1268,6 @@ main {
     gap: 1rem;
 }
 
-/* ── Snippet Preview (in cards) ─────────── */
-.snippet-preview {
-    background: #0b0d14;
-    border: 1px solid #1a1d2a;
-    border-radius: var(--radius-md);
-    padding: 0.45rem 0.75rem;
-    font-family: var(--font-code);
-    font-size: 0.76rem;
-    color: #6b7080;
-    text-align: left;
-    max-height: 3.5rem; /* ~3 lines at 0.76rem font-size */
-    overflow: hidden;
-    margin-top: var(--space-sm);
-    line-height: 1.55;
-    white-space: pre;
-    text-overflow: ellipsis;
-    text-align: left;
-}
 
 /* ── Tags Row ───────────────────────────── */
 .tags {
@@ -1465,3 +1448,81 @@ main {
     position: relative;
     z-index: 1;
 }
+
+/* === DASHBOARD CARD IMPROVEMENTS === */
+.snippet-card {
+    border-left: 3px solid var(--border);
+    transition: border-color 0.15s ease, background 0.15s ease;
+    padding: 14px 16px;
+}
+.snippet-card:hover {
+    border-left-color: var(--text-secondary);
+    background: var(--bg-tertiary);
+}
+.snippet-card[data-language="javascript"] { border-left-color: #f7df1e; }
+.snippet-card[data-language="python"] { border-left-color: #3776ab; }
+.snippet-card[data-language="ruby"] { border-left-color: #cc342d; }
+.snippet-card[data-language="php"] { border-left-color: #8892be; }
+.snippet-card[data-language="typescript"] { border-left-color: #3178c6; }
+.snippet-card[data-language="go"] { border-left-color: #00add8; }
+.snippet-card[data-language="rust"] { border-left-color: #f74c00; }
+.snippet-card[data-language="css"] { border-left-color: #264de4; }
+.snippet-card[data-language="html"] { border-left-color: #e34c26; }
+.snippet-card[data-language="bash"] { border-left-color: #34d399; }
+.snippet-card[data-language="sql"] { border-left-color: #e38c00; }
+.snippet-card[data-language="java"] { border-left-color: #b07219; }
+.snippet-card[data-language="c"] { border-left-color: #555555; }
+.snippet-card[data-language="cpp"] { border-left-color: #f34b7d; }
+
+.snippet-description {
+    font-size: 0.78rem;
+    color: var(--text-secondary);
+    margin: 4px 0 8px 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 600px;
+}
+
+.snippet-preview {
+    background: #0d0f18;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 8px 12px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    color: #8b9eb0;
+    text-align: left;
+    max-height: 3rem;
+    overflow: hidden;
+    margin-top: 8px;
+    line-height: 1.5;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.snippet-row-actions a,
+.snippet-row-actions button {
+    font-size: 0.73rem;
+    color: var(--text-hint);
+    transition: color 0.15s ease;
+}
+.snippet-row-actions a:hover { color: var(--text-primary); }
+.snippet-row-actions button:hover { color: #f87171 !important; }
+
+/* === SNIPPET VIEW === */
+.snippet-view-header[data-language="javascript"] { border-left: 3px solid #f7df1e; padding-left: 14px; }
+.snippet-view-header[data-language="python"] { border-left: 3px solid #3776ab; padding-left: 14px; }
+.snippet-view-header[data-language="ruby"] { border-left: 3px solid #cc342d; padding-left: 14px; }
+.snippet-view-header[data-language="php"] { border-left: 3px solid #8892be; padding-left: 14px; }
+.snippet-view-header[data-language="typescript"] { border-left: 3px solid #3178c6; padding-left: 14px; }
+.snippet-view-header[data-language="go"] { border-left: 3px solid #00add8; padding-left: 14px; }
+.snippet-view-header[data-language="rust"] { border-left: 3px solid #f74c00; padding-left: 14px; }
+.snippet-view-header[data-language="css"] { border-left: 3px solid #264de4; padding-left: 14px; }
+.snippet-view-header[data-language="html"] { border-left: 3px solid #e34c26; padding-left: 14px; }
+.snippet-view-header[data-language="bash"] { border-left: 3px solid #34d399; padding-left: 14px; }
+.snippet-view-header[data-language="sql"] { border-left: 3px solid #e38c00; padding-left: 14px; }
+.snippet-view-header[data-language="java"] { border-left: 3px solid #b07219; padding-left: 14px; }
+.snippet-view-header[data-language="c"] { border-left: 3px solid #555555; padding-left: 14px; }
+.snippet-view-header[data-language="cpp"] { border-left: 3px solid #f34b7d; padding-left: 14px; }

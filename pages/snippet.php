@@ -157,10 +157,10 @@ $prismLang = prismLanguage($snippet['language']);
 require BASE_PATH . '/includes/header.php';
 ?>
 
-<div style="max-width: 720px;">
+<div style="max-width: 720px;" class="snippet-view-container">
 
     <!-- Title + actions row -->
-    <div class="page-header">
+    <div class="page-header snippet-view-header" data-language="<?= sanitize($snippet['language']) ?>">
         <h1 style="font-size: 1.35rem; letter-spacing: -0.02em;"><?= sanitize($snippet['title']) ?></h1>
 
         <div class="flex gap-sm" style="flex-shrink: 0;">
@@ -249,5 +249,38 @@ require BASE_PATH . '/includes/header.php';
     <?php endif; ?>
 
 </div>
+
+<?php
+// More from this user
+$moreStmt = $pdo->prepare('
+    SELECT id, title, language, description, created_at
+    FROM snippets
+    WHERE user_id = :uid AND id != :sid AND is_public = true
+    ORDER BY updated_at DESC
+    LIMIT 3
+');
+$moreStmt->execute([':uid' => $snippet['author_id'], ':sid' => $snippetId]);
+$moreSnippets = $moreStmt->fetchAll();
+?>
+<?php if (!empty($moreSnippets)): ?>
+<div style="max-width: 720px; margin-top: var(--space-xl);">
+    <h3 style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: var(--space-md);">More from <?= sanitize($snippet['username']) ?></h3>
+    <div style="display: flex; flex-direction: column; gap: 8px;">
+        <?php foreach ($moreSnippets as $more): ?>
+            <a href="<?= BASE_URL ?>/snippet/<?= sanitize($more['id']) ?>" style="text-decoration: none;">
+                <div class="card snippet-card" data-language="<?= sanitize($more['language']) ?>" style="padding: 12px 16px;">
+                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                        <span style="font-size: 0.875rem; font-weight: 500; color: var(--text-primary);"><?= sanitize($more['title']) ?></span>
+                        <span class="badge badge-language" style="margin-left: auto; flex-shrink: 0;"><?= sanitize($more['language']) ?></span>
+                    </div>
+                    <?php if (!empty($more['description'])): ?>
+                        <div class="snippet-description"><?= sanitize($more['description']) ?></div>
+                    <?php endif; ?>
+                </div>
+            </a>
+        <?php endforeach; ?>
+    </div>
+</div>
+<?php endif; ?>
 
 <?php require BASE_PATH . '/includes/footer.php'; ?>
