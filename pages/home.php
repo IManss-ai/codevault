@@ -28,6 +28,9 @@ $recentSnippets = $stmt->fetchAll();
 require BASE_PATH . '/includes/header.php';
 ?>
 
+<div id="wave-container"></div>
+<div class="wave-overlay">
+
 <!-- Hero Section -->
 <section class="hero">
     <div class="container" style="max-width: 640px;">
@@ -190,5 +193,10 @@ require BASE_PATH . '/includes/header.php';
     </div>
 </section>
 <?php endif; ?>
+
+</div><!-- /.wave-overlay -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="<?= BASE_URL ?>/assets/js/wave-bg.js"></script>
 
 <?php require BASE_PATH . '/includes/footer.php'; ?>

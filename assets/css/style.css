@@ -1324,3 +1324,27 @@ main {
         grid-template-columns: 1fr;
     }
 }
+
+/* ── 3D Wave Background ─────────────────────────────────── */
+#wave-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.wave-overlay {
+    position: relative;
+    z-index: 1;
+}
+
+.hero,
+.features,
+.recent-section,
+.cta-section {
+    position: relative;
+    z-index: 1;
+}
