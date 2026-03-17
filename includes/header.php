@@ -82,7 +82,9 @@ $showSidebar = $_isLoggedIn && in_array($page ?? '', $_appPages);
 
         <!-- User avatar -->
         <a href="<?= BASE_URL ?>/u/<?= sanitize(currentUsername()) ?>" class="navbar-avatar">
-            <?= strtoupper(substr(currentUsername(), 0, 1)) ?>
+            <div style="width:30px; height:30px; border-radius:50%; background:linear-gradient(135deg, #2a3045, #1e2330); border:1px solid var(--border-hover); display:flex; align-items:center; justify-content:center; font-size:0.72rem; font-weight:600; color:var(--text-primary); cursor:pointer; flex-shrink:0;">
+                <?= strtoupper(substr(sanitize($_SESSION['username'] ?? 'U'), 0, 1)) ?>
+            </div>
         </a>
 
     <?php else: ?>

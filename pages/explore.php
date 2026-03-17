@@ -88,7 +88,7 @@ require BASE_PATH . '/includes/header.php';
     <!-- 2-column grid -->
     <div class="snippet-grid" style="grid-template-columns: repeat(2, 1fr); gap: 12px;">
         <?php foreach ($snippets as $snippet): ?>
-            <div class="card" style="display:flex; flex-direction:column; gap:0.5rem;">
+            <div class="card snippet-card" data-language="<?= sanitize($snippet['language']) ?>" style="display:flex; flex-direction:column; gap:0.5rem;">
                 <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:0.5rem;">
                     <h3 class="card-title" style="min-width:0;">
                         <a href="<?= BASE_URL ?>/snippet/<?= sanitize($snippet['id']) ?>">
@@ -106,7 +106,10 @@ require BASE_PATH . '/includes/header.php';
                     <span class="badge badge-language"><?= sanitize($snippet['language']) ?></span>
                     <a href="<?= BASE_URL ?>/u/<?= sanitize($snippet['username']) ?>"
                        style="font-size:0.73rem; color:var(--text-muted); text-decoration:none;">
-                        <?= sanitize($snippet['username']) ?>
+                        <div style="display:flex; align-items:center; gap:6px;">
+                            <div style="width:18px; height:18px; border-radius:50%; background:var(--bg-tertiary); border:1px solid var(--border); display:flex; align-items:center; justify-content:center; font-size:0.6rem; color:var(--text-muted); font-weight:600; flex-shrink:0;"><?= strtoupper(substr(sanitize($snippet['username']), 0, 1)) ?></div>
+                            <span><?= sanitize($snippet['username']) ?></span>
+                        </div>
                     </a>
                 </div>
             </div>
