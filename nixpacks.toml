@@ -1,0 +1,5 @@
+[phases.setup]
+nixPkgs = ["php82", "php82Extensions.pgsql", "php82Extensions.pdo_pgsql", "php82Extensions.mbstring", "php82Extensions.openssl"]
+
+[start]
+cmd = "nginx -g 'daemon off;' & php-fpm82"

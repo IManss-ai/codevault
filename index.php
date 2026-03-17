@@ -20,7 +20,7 @@ session_start([
 ]);
 
 // Get the requested URL path, default to empty string (home)
-$url = isset($_GET['url']) ? trim($_GET['url'], '/') : '';
+$url = $_GET['url'] ?? trim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), '/');
 
 // Split the URL into segments: "edit/abc-123" → ["edit", "abc-123"]
 $segments = $url ? explode('/', $url) : [];
@@ -29,7 +29,7 @@ $param = $segments[1] ?? null;
 
 // Base path for includes (so pages can reference project root)
 define('BASE_PATH', __DIR__);
-define('BASE_URL', '/codevault');
+define('BASE_URL', $_ENV['BASE_URL'] ?? '');
 
 // Route to the correct page
 switch ($page) {
