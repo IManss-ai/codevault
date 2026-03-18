@@ -2,16 +2,12 @@ FROM php:8.2-apache
 
 RUN apt-get update && apt-get install -y libpq-dev && \
     docker-php-ext-install pdo pdo_pgsql pgsql && \
-    a2enmod rewrite
+    a2enmod rewrite && \
+    a2dismod mpm_event && \
+    a2enmod mpm_prefork
 
 COPY . /var/www/html/
 
-RUN echo '<Directory /var/www/html>\n\
-    AllowOverride All\n\
-    Require all granted\n\
-</Directory>' > /etc/apache2/conf-available/codevault.conf && \
-    a2enconf codevault
-
-ENV APACHE_LOG_DIR=/var/log/apache2
+COPY apache.conf /etc/apache2/sites-available/000-default.conf
 
 EXPOSE 80
