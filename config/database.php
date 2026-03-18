@@ -39,7 +39,7 @@ class Database
             } catch (PDOException $e) {
                 // Never expose raw DB errors to users in production
                 error_log('Database connection failed: ' . $e->getMessage());
-                die('Error: Could not connect to the database. Check your .env credentials.');
+                die('DB Error: ' . $e->getMessage());
             }
         }
 
