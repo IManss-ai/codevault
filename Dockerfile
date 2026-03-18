@@ -1,10 +1,17 @@
-FROM php:8.2-cli
+FROM php:8.2-apache
 
 RUN apt-get update && apt-get install -y libpq-dev && \
-    docker-php-ext-install pdo pdo_pgsql pgsql
+    docker-php-ext-install pdo pdo_pgsql pgsql && \
+    a2enmod rewrite
 
-WORKDIR /app
+COPY . /var/www/html/
 
-COPY . .
+RUN echo '<Directory /var/www/html>\n\
+    AllowOverride All\n\
+    Require all granted\n\
+</Directory>' > /etc/apache2/conf-available/codevault.conf && \
+    a2enconf codevault
 
-CMD php -S 0.0.0.0:$PORT -t /app index.php
+ENV APACHE_LOG_DIR=/var/log/apache2
+
+EXPOSE 80
