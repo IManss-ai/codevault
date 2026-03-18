@@ -28,7 +28,7 @@ class Database
                 die('Error: Database credentials not set in .env file.');
             }
 
-            $dsn = "pgsql:host={$host};port={$port};dbname={$name}";
+            $dsn = "pgsql:host={$host};port={$port};dbname={$name};sslmode=require";
 
             try {
                 self::$instance = new PDO($dsn, $user, $pass, [
