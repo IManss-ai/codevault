@@ -1,8 +1,10 @@
-FROM php:8.2-apache
+FROM php:8.2-cli
 
-RUN apt-get update && apt-get install -y libpq-dev \
-    && docker-php-ext-install pdo pdo_pgsql \
-    && a2enmod rewrite
+RUN apt-get update && apt-get install -y libpq-dev && \
+    docker-php-ext-install pdo pdo_pgsql pgsql
 
-COPY 000-default.conf /etc/apache2/sites-available/000-default.conf
-COPY . /var/www/html/
+WORKDIR /app
+
+COPY . .
+
+CMD php -S 0.0.0.0:$PORT router.php
