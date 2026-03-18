@@ -1,10 +1,10 @@
-FROM dunglas/frankenphp:php8.4-bookworm
+FROM php:8.2-cli
 
-RUN install-php-extensions pdo_pgsql pgsql
+RUN apt-get update && apt-get install -y libpq-dev && \
+    docker-php-ext-install pdo pdo_pgsql pgsql
 
 WORKDIR /app
 
 COPY . .
 
-ENV FRANKENPHP_CONFIG="worker ./index.php"
-ENV SERVER_NAME=":${PORT:-80}"
+CMD php -S 0.0.0.0:$PORT -t /app index.php
