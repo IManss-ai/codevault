@@ -1,5 +1,5 @@
 [phases.setup]
-nixPkgs = ["php82", "php82Extensions.pgsql", "php82Extensions.pdo_pgsql", "php82Extensions.mbstring", "php82Extensions.openssl"]
+nixPkgs = ["php82", "php82Extensions.pgsql", "php82Extensions.pdo_pgsql", "php82Extensions.mbstring", "php82Extensions.openssl", "php82Extensions.curl", "php82Extensions.tokenizer", "nginx", "php82-fpm"]
 
 [start]
-cmd = "nginx -g 'daemon off;' & php-fpm82"
+cmd = "php -S 0.0.0.0:$PORT -t /app"
