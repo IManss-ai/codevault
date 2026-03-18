@@ -9,7 +9,8 @@
 $envPath = __DIR__ . '/../.env';
 
 if (!file_exists($envPath)) {
-    die('Error: .env file not found. Copy .env.example to .env and fill in your credentials.');
+    // On Railway, environment variables are injected directly — no .env file needed
+    return;
 }
 
 $lines = file($envPath, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
