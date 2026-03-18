@@ -18,11 +18,11 @@ class Database
     public static function connect(): PDO
     {
         if (self::$instance === null) {
-            $host = $_ENV['DB_HOST'] ?? '';
-            $port = $_ENV['DB_PORT'] ?? '5432';
-            $name = $_ENV['DB_NAME'] ?? 'postgres';
-            $user = $_ENV['DB_USER'] ?? '';
-            $pass = $_ENV['DB_PASS'] ?? '';
+            $host = $_ENV['DB_HOST'] ?? getenv('DB_HOST') ?? '';
+            $port = $_ENV['DB_PORT'] ?? getenv('DB_PORT') ?? '5432';
+            $name = $_ENV['DB_NAME'] ?? getenv('DB_NAME') ?? 'postgres';
+            $user = $_ENV['DB_USER'] ?? getenv('DB_USER') ?? '';
+            $pass = $_ENV['DB_PASS'] ?? getenv('DB_PASS') ?? '';
 
             if (empty($host) || empty($user)) {
                 die('Error: Database credentials not set in .env file.');
