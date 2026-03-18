@@ -25,7 +25,7 @@ class Database
             $pass = $_ENV['DB_PASS'] ?? getenv('DB_PASS') ?? '';
 
             if (empty($host) || empty($user)) {
-                die('Error: Database credentials not set in .env file.');
+                die('Debug: host=' . ($host ?: 'EMPTY') . ' user=' . ($user ?: 'EMPTY') . ' env_keys=' . implode(',', array_keys($_ENV)));
             }
 
             $dsn = "pgsql:host={$host};port={$port};dbname={$name};sslmode=require";
